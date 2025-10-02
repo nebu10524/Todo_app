@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lista de Tareas con Autenticación</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex; 
+      justify-content: center; 
+      align-items: center;
+      padding: 20px;
+    }
+
+    .contenedor {
+      width: 100%;
+      max-width: 650px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      padding: 30px; 
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      color: white;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h1 { 
+      text-align: center; 
+      margin-bottom: 20px; 
+      font-weight: 600; 
+    }
+
+    /* Estilos para el formulario de login */
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .login-form input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      font-size: 15px;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .login-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .login-buttons button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    #btnLogin {
+      background: #00c6ff;
+      color: white;
+    }
+
+    #btnLogin:hover {
+      background: #0096c7;
+      transform: scale(1.05);
+    }
+
+    #btnRegistro {
+      background: #28a745;
+      color: white;
+    }
+
+    #btnRegistro:hover {
+      background: #1e7e34;
+      transform: scale(1.05);
+    }
+
+    /* Header de usuario logueado */
+    .user-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+    }
+
+    .user-info {
+      font-size: 14px;
+    }
+
+    #btnLogout {
+      background: #ff4b5c;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    #btnLogout:hover {
+      background: #c82333;
+      transform: scale(1.05);
+    }
+
+    input, select {
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      font-size: 15px;
+      margin-right: 8px;
+    }
+
+    input[type="text"] { width: 45%; }
+    input[type="date"] { width: 25%; }
+
+    button {
+      padding: 10px 18px; 
+      border: none; 
+      border-radius: 8px;
+      cursor: pointer; 
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    #btnAgregar { 
+      background: #00c6ff; 
+      color: white; 
+      font-weight: bold; 
+    }
+    #btnAgregar:hover { 
+      background: #0096c7; 
+      transform: scale(1.05); 
+    }
+
+    #btnEliminarTodas, #btnExportar {
+      margin-top: 15px; 
+      width: 100%;
+      color: white; 
+      font-weight: bold;
+    }
+
+    #btnEliminarTodas {
+      background: #ff4b5c;
+    }
+
+    #btnEliminarTodas:hover { 
+      background: #c82333; 
+      transform: scale(1.05); 
+    }
+
+    #btnExportar {
+      background: #ffc107;
+      color: #000;
+    }
+
+    #btnExportar:hover {
+      background: #e0a800;
+      transform: scale(1.05);
+    }
+
+    ul { 
+      list-style: none; 
+      margin-top: 20px; 
+      padding: 0; 
+    }
+
+    li {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 12px; 
+      border-radius: 10px;
+      margin-bottom: 10px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      animation: slideIn 0.4s ease;
+    }
+
+    .informacion {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .task-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    li.completada .task-text { 
+      text-decoration: line-through; 
+      color: #ddd; 
+    }
+
+    .informacion small { 
+      font-size: 13px; 
+      color: #f0f0f0;
+      margin-left: 2px;
+    }
+    .expired { color: #ffcccc; }
+    .near { color: #ffeb99; }
+
+    button.eliminar { 
+      background: #ff4b5c; 
+      color: white; 
+      padding: 6px 12px; 
+    }
+    button.eliminar:hover { 
+      background: #c82333; 
+    }
+    button.alternar { 
+      background: #28a745; 
+      color: white; 
+      padding: 6px 12px; 
+    }
+    button.alternar:hover { 
+      background: #1e7e34; 
+    }
+    button.edit { 
+      background: #ffc107; 
+      color: black; 
+      padding: 6px 12px; 
+    }
+    button.edit:hover { 
+      background: #e0a800; 
+    }
+
+    .mensaje {
+      position: fixed; 
+      top: 10%; 
+      left: 50%; 
+      transform: translateX(-50%);
+      padding: 15px 30px; 
+      border-radius: 10px;
+      font-weight: bold; 
+      font-size: 18px; 
+      opacity: 0.95;
+      z-index: 1000; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      animation: fadeinout 3s forwards;
+    }
+    .exito { background-color: #28a745; color: white; }
+    .error { background-color: #dc3545; color: white; }
+    .advertencia { background-color: #ffc107; color: #000; }
+
+    @keyframes fadeinout {
+      0% { opacity: 0; transform: translate(-50%, -20px); }
+      10%, 90% { opacity: 1; transform: translate(-50%, 0); }
+      100% { opacity: 0; transform: translate(-50%, -20px); }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <!-- 🔐 Pantalla de Login -->
+  <div class="contenedor" id="loginContainer">
+    <h1>👤 Iniciar Sesión</h1>
+    <div class="login-form">
+      <input type="text" id="loginUsuario" placeholder="Usuario" />
+      <input type="email" id="loginEmail" placeholder="Email" />
+      <input type="password" id="loginPassword" placeholder="Contraseña" />
+      <div class="login-buttons">
+        <button id="btnLogin">Iniciar Sesión</button>
+        <button id="btnRegistro">Registrarse</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 📌 Pantalla de Tareas -->
+  <div class="contenedor" id="tareasContainer" style="display:none;">
+    <!-- Header con info del usuario -->
+    <div class="user-header">
+      <div class="user-info">
+        <strong id="nombreUsuario"></strong><br>
+        <small id="emailUsuario"></small>
+      </div>
+      <button id="btnLogout">Cerrar Sesión</button>
+    </div>
+
+    <h1>📌 Lista de Tareas</h1>
+    <div>
+      <input type="text" id="entradaTarea" placeholder="Escribe una tarea..." autofocus />
+      <input type="date" id="fechaLimite" />
+      <select id="prioridadTarea">
+        <option value="alta">Alta 🔥</option>
+        <option value="media" selected>Media ⚡</option>
+        <option value="baja">Baja 💤</option>
+      </select>
+      <button id="btnAgregar" type="button">Añadir</button>
+    </div>
+    <div style="margin-top:15px;">
+      <label for="filtro">Filtrar:</label>
+      <select id="filtro">
+        <option value="todas">Todas</option>
+        <option value="completadas">Completadas</option>
+        <option value="pendientes">Pendientes</option>
+      </select>
+    </div>
+    <ul id="listaTareas"></ul>
+    <button id="btnEliminarTodas">🗑 Eliminar todas</button>
+    <button id="btnExportar">📂 Exportar tareas</button>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // ========== VARIABLES GLOBALES ==========
+      let usuarioActivo = null;
+      const loginContainer = document.getElementById("loginContainer");
+      const tareasContainer = document.getElementById("tareasContainer");
+
+      // ========== GESTIÓN DE AUTENTICACIÓN ==========
+      const cargarSesion = () => {
+        const sesion = JSON.parse(sessionStorage.getItem("usuarioActivo"));
+        if (sesion) {
+          usuarioActivo = sesion;
+          mostrarPantallaTareas();
+        }
+      };
+
+      const guardarSesion = () => {
+        sessionStorage.setItem("usuarioActivo", JSON.stringify(usuarioActivo));
+      };
+
+      const cerrarSesion = () => {
+        usuarioActivo = null;
+        sessionStorage.removeItem("usuarioActivo");
+        loginContainer.style.display = "block";
+        tareasContainer.style.display = "none";
+        mostrarMensaje("Sesión cerrada 👋", "exito");
+      };
+
+      const mostrarPantallaTareas = () => {
+        document.getElementById("nombreUsuario").textContent = `👤 ${usuarioActivo.usuario}`;
+        document.getElementById("emailUsuario").textContent = usuarioActivo.email;
+        loginContainer.style.display = "none";
+        tareasContainer.style.display = "block";
+      };
+
+      // ========== EVENTOS DE LOGIN ==========
+      document.getElementById("btnLogin").addEventListener("click", () => {
+        const usuario = document.getElementById("loginUsuario").value.trim();
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value.trim();
+
+        if (!usuario || !email || !password) {
+          mostrarMensaje("Completa todos los campos", "error");
+          return;
+        }
+
+        // Simulación de login (aquí conectarás con Flask)
+        usuarioActivo = { usuario, email };
+        guardarSesion();
+        mostrarMensaje(`¡Bienvenido ${usuarioActivo.usuario}! 🎉`, "exito");
+        mostrarPantallaTareas();
+      });
+
+      document.getElementById("btnRegistro").addEventListener("click", () => {
+        mostrarMensaje("Registro pendiente (conectar con API Flask)", "advertencia");
+      });
+
+      document.getElementById("btnLogout").addEventListener("click", cerrarSesion);
+
+      // ========== SISTEMA DE TAREAS (SIN MODIFICAR) ==========
+      const elementoEntradaTarea = document.getElementById("entradaTarea");
+      const elementoFechaTarea = document.getElementById("fechaLimite");
+      const elementoPrioridad = document.getElementById("prioridadTarea");
+      const botonAnadirTarea = document.getElementById("btnAgregar");
+      const listaElementosTarea = document.getElementById("listaTareas");
+      const selectorFiltro = document.getElementById("filtro");
+      const botonEliminarTodas = document.getElementById("btnEliminarTodas");
+      const MAXIMO_TAREAS = 20;
+      const CLAVE_ALMACENAMIENTO = "tareas";
+      const DURACION_MENSAJE = 3000;
+
+      const mostrarMensaje = (textoMensaje, tipoMensaje) => {
+        const contenedorMensaje = document.createElement("div");
+        contenedorMensaje.textContent = textoMensaje;
+        contenedorMensaje.className = `mensaje ${tipoMensaje}`;
+        document.body.appendChild(contenedorMensaje);
+        setTimeout(() => contenedorMensaje.remove(), DURACION_MENSAJE);
+      };
+
+      const ordenarTareas = (tareas) => {
+        const prioridadOrden = { alta: 1, media: 2, baja: 3 };
+        return tareas.sort((a, b) => {
+          if (prioridadOrden[a.prioridad] !== prioridadOrden[b.prioridad]) {
+            return prioridadOrden[a.prioridad] - prioridadOrden[b.prioridad];
+          }
+          if (a.fecha && b.fecha) {
+            return new Date(a.fecha) - new Date(b.fecha);
+          }
+          if (a.fecha && !b.fecha) return -1;
+          if (!a.fecha && b.fecha) return 1;
+          return 0;
+        });
+      };
+
+      const obtenerTareasDesdeDOM = () => {
+        return Array.from(listaElementosTarea.children).map(elementoLista => ({
+          texto: elementoLista.querySelector(".task-text").textContent,
+          completada: elementoLista.classList.contains("completada"),
+          fecha: elementoLista.dataset.date || null,
+          prioridad: elementoLista.dataset.prioridad || "media"
+        }));
+      };
+
+      const guardarTareas = () => {
+        let tareas = obtenerTareasDesdeDOM();
+        tareas = ordenarTareas(tareas);
+        localStorage.setItem(CLAVE_ALMACENAMIENTO, JSON.stringify(tareas));
+      };
+
+      const exportarTareas = () => {
+        try {
+          const tareas = JSON.parse(localStorage.getItem(CLAVE_ALMACENAMIENTO));
+          if (!tareas || tareas.length === 0) {
+            return;
+          }
+          const blob = new Blob([JSON.stringify(tareas, null, 2)], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const enlace = document.createElement("a");
+          enlace.href = url;
+          enlace.download = "tareas.json";
+          enlace.click();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+          mostrarMensaje("Tareas exportadas 📂", "exito");
+        } catch (error) {
+          mostrarMensaje("Error al exportar: " + error.message, "error");
+        }
+      };
+
+      const cargarTareas = () => {
+        let tareas = JSON.parse(localStorage.getItem(CLAVE_ALMACENAMIENTO)) || [];
+        tareas = ordenarTareas(tareas);
+        listaElementosTarea.innerHTML = "";
+        tareas.forEach(anadirTareaAlDOM);
+      };
+
+      const obtenerClaseFecha = (fechaTarea) => {
+        const fechaHoy = new Date().toISOString().split("T")[0];
+        if (fechaTarea < fechaHoy) return "expired";
+        if (fechaTarea === fechaHoy) return "near";
+        return "";
+      };
+
+      const crearElementoFecha = (fechaTarea) => {
+        const elementoFechaLimite = document.createElement("small");
+        elementoFechaLimite.textContent = `📅 Límite: ${fechaTarea}`;
+        const claseFecha = obtenerClaseFecha(fechaTarea);
+        if (claseFecha) {
+          elementoFechaLimite.classList.add(claseFecha);
+        }
+        return elementoFechaLimite;
+      };
+
+      const crearSeccionInformacion = (tarea) => {
+        const contenedorInformacion = document.createElement("div");
+        contenedorInformacion.classList.add("informacion");
+
+        const elementoTexto = document.createElement("span");
+        elementoTexto.textContent = tarea.texto;
+        elementoTexto.classList.add("task-text");
+        contenedorInformacion.appendChild(elementoTexto);
+
+        if (tarea.fecha) {
+          const elementoFecha = crearElementoFecha(tarea.fecha);
+          contenedorInformacion.appendChild(elementoFecha);
+        } else {
+          const elementoFecha = document.createElement("small");
+          elementoFecha.textContent = "📅 Sin fecha";
+          contenedorInformacion.appendChild(elementoFecha);
+        }
+
+        const elementoPrioridad = document.createElement("small");
+        elementoPrioridad.textContent = `🔥 Prioridad: ${tarea.prioridad}`;
+        contenedorInformacion.appendChild(elementoPrioridad);
+
+        return contenedorInformacion;
+      };
+
+      const actualizarBotonCompletar = (boton, elementoLista) => {
+        const estaCompletada = elementoLista.classList.contains("completada");
+        boton.textContent = estaCompletada ? "Desmarcar" : "Completar";
+      };
+
+      const alternarEstadoCompletado = (elementoLista, botonAlternar) => {
+        elementoLista.classList.toggle("completada");
+        actualizarBotonCompletar(botonAlternar, elementoLista);
+        guardarTareas();
+        cargarTareas();
+      };
+
+      const editarTarea = (elementoTexto) => {
+        const textoActual = elementoTexto.textContent;
+        const textoNuevo = prompt("Editar tarea:", textoActual);
+        if (textoNuevo && textoNuevo.trim()) {
+          elementoTexto.textContent = textoNuevo.trim();
+          guardarTareas();
+          cargarTareas();
+        }
+      };
+
+      const eliminarTarea = (elementoLista) => {
+        elementoLista.remove();
+        guardarTareas();
+        cargarTareas();
+      };
+
+      const crearBotonesAccion = (tarea, elementoLista, elementoTexto) => {
+        const contenedorBotones = document.createElement("div");
+        contenedorBotones.classList.add("task-buttons");
+
+        const botonAlternar = document.createElement("button");
+        botonAlternar.className = "alternar";
+        actualizarBotonCompletar(botonAlternar, elementoLista);
+        botonAlternar.addEventListener("click", () => alternarEstadoCompletado(elementoLista, botonAlternar));
+
+        const botonEditar = document.createElement("button");
+        botonEditar.textContent = "Editar";
+        botonEditar.className = "edit";
+        botonEditar.addEventListener("click", () => editarTarea(elementoTexto));
+
+        const botonEliminar = document.createElement("button");
+        botonEliminar.textContent = "Eliminar";
+        botonEliminar.className = "eliminar";
+        botonEliminar.addEventListener("click", () => eliminarTarea(elementoLista));
+
+        contenedorBotones.appendChild(botonAlternar);
+        contenedorBotones.appendChild(botonEditar);
+        contenedorBotones.appendChild(botonEliminar);
+
+        return contenedorBotones;
+      };
+
+      const anadirTareaAlDOM = (datosTarea) => {
+        const elementoLista = document.createElement("li");
+        if (datosTarea.completada) elementoLista.classList.add("completada");
+        elementoLista.dataset.date = datosTarea.fecha || "";
+        elementoLista.dataset.prioridad = datosTarea.prioridad || "media";
+
+        const seccionInformacion = crearSeccionInformacion(datosTarea);
+        const elementoTexto = seccionInformacion.querySelector(".task-text");
+        const seccionBotones = crearBotonesAccion(datosTarea, elementoLista, elementoTexto);
+
+        elementoLista.appendChild(seccionInformacion);
+        elementoLista.appendChild(seccionBotones);
+        listaElementosTarea.appendChild(elementoLista);
+      };
+
+      const validarTextoTarea = (texto) => {
+        if (!texto) {
+          mostrarMensaje("No puedes añadir una tarea vacía", "error");
+          return false;
+        }
+        return true;
+      };
+
+      const validarLimiteTareas = () => {
+        if (listaElementosTarea.children.length >= MAXIMO_TAREAS) {
+          mostrarMensaje(`Máximo ${MAXIMO_TAREAS} tareas`, "advertencia");
+          return false;
+        }
+        return true;
+      };
+
+      const validarTareaUnica = (textoNuevo) => {
+        const textosExistentes = Array.from(listaElementosTarea.querySelectorAll(".task-text"));
+        const existe = textosExistentes.some(elemento => 
+          elemento.textContent.toLowerCase() === textoNuevo.toLowerCase()
+        );
+        if (existe) {
+          mostrarMensaje("⚠️ Esa tarea ya existe", "advertencia");
+          return false;
+        }
+        return true;
+      };
+
+      const limpiarCamposEntrada = () => {
+        elementoEntradaTarea.value = "";
+        elementoFechaTarea.value = "";
+        elementoPrioridad.value = "media";
+      };
+
+      const procesarNuevaTarea = () => {
+        const textoTarea = elementoEntradaTarea.value.trim();
+        const fechaTarea = elementoFechaTarea.value;
+        const prioridad = elementoPrioridad.value;
+
+        if (!validarTextoTarea(textoTarea)) return;
+        if (!validarLimiteTareas()) return;
+        if (!validarTareaUnica(textoTarea)) return;
+
+        const nuevaTarea = { 
+          texto: textoTarea, 
+          completada: false, 
+          fecha: fechaTarea,
+          prioridad: prioridad 
+        };
+
+        anadirTareaAlDOM(nuevaTarea);
+        limpiarCamposEntrada();
+        guardarTareas();
+        cargarTareas();
+        mostrarMensaje("Tarea añadida ✅", "exito");
+      };
+
+      const debeElementoMostrarseConFiltro = (elementoLista, valorFiltro) => {
+        const estaCompletada = elementoLista.classList.contains("completada");
+        switch (valorFiltro) {
+          case "todas": return true;
+          case "completadas": return estaCompletada;
+          case "pendientes": return !estaCompletada;
+          default: return false;
+        }
+      };
+
+      const aplicarFiltroTareas = () => {
+        const valorFiltro = selectorFiltro.value;
+        Array.from(listaElementosTarea.children).forEach(elementoLista => {
+          elementoLista.style.display = debeElementoMostrarseConFiltro(elementoLista, valorFiltro) ? "flex" : "none";
+        });
+      };
+
+      const eliminarTodasLasTareas = () => {
+        if (!listaElementosTarea.children.length) {
+          return mostrarMensaje("No hay tareas para borrar", "advertencia");
+        }
+        const confirmacion = confirm("¿Seguro que quieres borrar todas?");
+        if (confirmacion) {
+          listaElementosTarea.innerHTML = "";
+          localStorage.removeItem(CLAVE_ALMACENAMIENTO);
+          mostrarMensaje("Todas las tareas eliminadas 🗑", "exito");
+        }
+      };
+
+      const configurarEventos = () => {
+        botonAnadirTarea.addEventListener("click", procesarNuevaTarea);
+        elementoEntradaTarea.addEventListener("keydown", (e) => { 
+          if (e.key === "Enter") procesarNuevaTarea(); 
+        });
+        selectorFiltro.addEventListener("change", aplicarFiltroTareas);
+        botonEliminarTodas.addEventListener("click", eliminarTodasLasTareas);
+        const botonExportar = document.getElementById("btnExportar");
+        if (botonExportar) {
+          botonExportar.addEventListener("click", exportarTareas);
+        }
+      };
+
+      const inicializarAplicacion = () => {
+        cargarSesion();
+        cargarTareas();
+        configurarEventos();
+      };
+
+      inicializarAplicacion();
+    });
+  </script>
+</body>
+</html>
