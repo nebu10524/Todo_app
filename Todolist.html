@@ -449,6 +449,7 @@
       };
 
       // ========== EVENTOS DE LOGIN ==========
+
       document.getElementById("btnLogin").addEventListener("click", async () => {
         try {
           const email = document.getElementById("loginEmail").value.trim();
@@ -503,6 +504,41 @@
           const mensajeError = err?.body?.message || err?.message || "Error al registrar usuario";
           mostrarMensaje(mensajeError, "error");
         }
+
+      document.getElementById("btnLogin").addEventListener("click", () => {
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value.trim();
+
+        if (!email || !password) {
+          mostrarMensaje("Completa todos los campos", "error");
+          return;
+        }
+
+        // Simulación de login (aquí conectarás con Flask)
+        usuarioActivo = { usuario: email.split('@')[0], email };
+        guardarSesion();
+        mostrarMensaje(`Bienvenido ${usuarioActivo.usuario}`, "exito");
+        mostrarPantallaTareas();
+      });
+
+      document.getElementById("btnRegistro").addEventListener("click", () => {
+        const usuario = document.getElementById("registroUsuario").value.trim();
+        const email = document.getElementById("registroEmail").value.trim();
+        const password = document.getElementById("registroPassword").value.trim();
+
+        if (!usuario || !email || !password) {
+          mostrarMensaje("Completa todos los campos", "error");
+          return;
+        }
+
+        mostrarMensaje("Usuario registrado exitosamente", "exito");
+        
+        // Volver al login
+        setTimeout(() => {
+          registroContainer.style.display = "none";
+          loginContainer.style.display = "block";
+        }, 2000);
+
       });
 
       document.getElementById("btnLogout").addEventListener("click", cerrarSesion);
