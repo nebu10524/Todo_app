@@ -393,6 +393,31 @@
         loginContainer.style.display = "block";
       });
 
+      // ========== FUNCIONES DE API ==========
+      const API_URL = "http://127.0.0.1:5000";
+
+      async function loginAPI(email, password) {
+        const res = await fetch(`${API_URL}/login`, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw { status: res.status, body: data };
+        return data.usuario;
+      }
+
+      async function registrarAPI(usuario, email, password) {
+        const res = await fetch(`${API_URL}/usuarios`, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ usuario, email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw { status: res.status, body: data };
+        return data;
+      }
+
       // ========== GESTIÓN DE AUTENTICACIÓN ==========
       const cargarSesion = () => {
         const sesion = JSON.parse(sessionStorage.getItem("usuarioActivo"));
@@ -424,6 +449,62 @@
       };
 
       // ========== EVENTOS DE LOGIN ==========
+
+      document.getElementById("btnLogin").addEventListener("click", async () => {
+        try {
+          const email = document.getElementById("loginEmail").value.trim();
+          const password = document.getElementById("loginPassword").value.trim();
+
+          if (!email || !password) {
+            mostrarMensaje("Completa todos los campos", "error");
+            return;
+          }
+
+          const u = await loginAPI(email, password);
+          usuarioActivo = u;
+          guardarSesion();
+          mostrarMensaje(`Bienvenido ${u.usuario}`, "exito");
+          mostrarPantallaTareas();
+        } catch (err) {
+          if (err.status === 401) {
+            mostrarMensaje("Credenciales incorrectas", "error");
+          } else {
+            mostrarMensaje("Error en login", "error");
+          }
+        }
+      });
+
+      // ========== EVENTOS DE REGISTRO ==========
+      document.getElementById("btnRegistro").addEventListener("click", async () => {
+        try {
+          const usuario = document.getElementById("registroUsuario").value.trim();
+          const email = document.getElementById("registroEmail").value.trim();
+          const password = document.getElementById("registroPassword").value.trim();
+
+          if (!usuario || !email || !password) {
+            mostrarMensaje("Completa todos los campos", "error");
+            return;
+          }
+
+          const res = await registrarAPI(usuario, email, password);
+          mostrarMensaje(res.message || "Usuario registrado exitosamente", "exito");
+          
+          // Limpiar campos
+          document.getElementById("registroUsuario").value = "";
+          document.getElementById("registroEmail").value = "";
+          document.getElementById("registroPassword").value = "";
+          
+          // Volver al login después de 2 segundos
+          setTimeout(() => {
+            registroContainer.style.display = "none";
+            loginContainer.style.display = "block";
+          }, 2000);
+        } catch (err) {
+          console.error("Error completo:", err);
+          const mensajeError = err?.body?.message || err?.message || "Error al registrar usuario";
+          mostrarMensaje(mensajeError, "error");
+        }
+
       document.getElementById("btnLogin").addEventListener("click", () => {
         const email = document.getElementById("loginEmail").value.trim();
         const password = document.getElementById("loginPassword").value.trim();
@@ -457,11 +538,12 @@
           registroContainer.style.display = "none";
           loginContainer.style.display = "block";
         }, 2000);
+
       });
 
       document.getElementById("btnLogout").addEventListener("click", cerrarSesion);
 
-      // ========== SISTEMA DE TAREAS (SIN MODIFICAR) ==========
+      // ========== SISTEMA DE TAREAS ==========
       const elementoEntradaTarea = document.getElementById("entradaTarea");
       const elementoFechaTarea = document.getElementById("fechaLimite");
       const elementoPrioridad = document.getElementById("prioridadTarea");
