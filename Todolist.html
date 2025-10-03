@@ -418,6 +418,23 @@
         return data;
       }
 
+      async function cargarTareasDesdeAPI(usuarioId) {
+        try {
+          const res = await fetch(`${API_URL}/tareas?usuario_id=${usuarioId}`);
+          const data = await res.json();
+          if (!data.success) {
+            mostrarMensaje("Error al cargar tareas desde API", "error");
+            return;
+          }
+          listaElementosTarea.innerHTML = "";
+          data.tareas.forEach(tarea => {
+            anadirTareaAlDOM(tarea);
+          });
+        } catch (err) {
+          mostrarMensaje("Error de conexión al cargar tareas", "error");
+        }
+      }
+
       // ========== GESTIÓN DE AUTENTICACIÓN ==========
       const cargarSesion = () => {
         const sesion = JSON.parse(sessionStorage.getItem("usuarioActivo"));
@@ -449,7 +466,6 @@
       };
 
       // ========== EVENTOS DE LOGIN ==========
-
       document.getElementById("btnLogin").addEventListener("click", async () => {
         try {
           const email = document.getElementById("loginEmail").value.trim();
@@ -459,6 +475,53 @@
             mostrarMensaje("Completa todos los campos", "error");
             return;
           }
+
+          const u = await loginAPI(email, password);
+          usuarioActivo = u;
+          guardarSesion();
+          mostrarMensaje(`Bienvenido ${u.usuario}`, "exito");
+          mostrarPantallaTareas();
+          await cargarTareasDesdeAPI(u.id);
+        } catch (err) {
+          if (err.status === 401) {
+            mostrarMensaje("Credenciales incorrectas", "error");
+          } else {
+            mostrarMensaje("Error en login", "error");
+          }
+        }
+      });
+
+      // ========== EVENTOS DE REGISTRO ==========
+      document.getElementById("btnRegistro").addEventListener("click", async () => {
+        try {
+          const usuario = document.getElementById("registroUsuario").value.trim();
+          const email = document.getElementById("registroEmail").value.trim();
+          const password = document.getElementById("registroPassword").value.trim();
+
+          if (!usuario || !email || !password) {
+            mostrarMensaje("Completa todos los campos", "error");
+            return;
+          }
+
+          const res = await registrarAPI(usuario, email, password);
+          mostrarMensaje(res.message || "Usuario registrado exitosamente", "exito");
+          
+          // Limpiar campos
+          document.getElementById("registroUsuario").value = "";
+          document.getElementById("registroEmail").value = "";
+          document.getElementById("registroPassword").value = "";
+          
+          // Volver al login después de 2 segundos
+          setTimeout(() => {
+            registroContainer.style.display = "none";
+            loginContainer.style.display = "block";
+          }, 2000);
+        } catch (err) {
+          console.error("Error completo:", err);
+          const mensajeError = err?.body?.message || err?.message || "Error al registrar usuario";
+          mostrarMensaje(mensajeError, "error");
+        }
+
 
           const u = await loginAPI(email, password);
           usuarioActivo = u;
@@ -538,6 +601,7 @@
           registroContainer.style.display = "none";
           loginContainer.style.display = "block";
         }, 2000);
+
 
       });
 
@@ -666,27 +730,110 @@
         boton.textContent = estaCompletada ? "Desmarcar" : "Completar";
       };
 
-      const alternarEstadoCompletado = (elementoLista, botonAlternar) => {
+      const alternarEstadoCompletado = async (elementoLista, botonAlternar) => {
+        const tareaId = elementoLista.dataset.tareaId;
         elementoLista.classList.toggle("completada");
         actualizarBotonCompletar(botonAlternar, elementoLista);
-        guardarTareas();
-        cargarTareas();
+        
+        // Actualizar en backend
+        if (tareaId) {
+          try {
+            const completada = elementoLista.classList.contains("completada");
+            const texto = elementoLista.querySelector(".task-text").textContent;
+            const fecha = elementoLista.dataset.date || null;
+            const prioridad = elementoLista.dataset.prioridad || "media";
+
+            const res = await fetch(`${API_URL}/tareas/${tareaId}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ 
+                texto, 
+                completada, 
+                fecha, 
+                prioridad,
+                usuario_id: usuarioActivo.id 
+              })
+            });
+            
+            if (!res.ok) throw new Error("Error al actualizar");
+            
+            // Recargar desde el backend para asegurar sincronización
+            await cargarTareasDesdeAPI(usuarioActivo.id);
+          } catch (err) {
+            mostrarMensaje("Error al actualizar tarea en el servidor", "error");
+            console.error(err);
+          }
+        } else {
+          guardarTareas();
+        }
       };
 
-      const editarTarea = (elementoTexto) => {
+      const editarTarea = async (elementoTexto, elementoLista) => {
         const textoActual = elementoTexto.textContent;
         const textoNuevo = prompt("Editar tarea:", textoActual);
         if (textoNuevo && textoNuevo.trim()) {
           elementoTexto.textContent = textoNuevo.trim();
-          guardarTareas();
-          cargarTareas();
+          
+          // Actualizar en backend
+          const tareaId = elementoLista.dataset.tareaId;
+          if (tareaId) {
+            try {
+              const completada = elementoLista.classList.contains("completada");
+              const fecha = elementoLista.dataset.date || null;
+              const prioridad = elementoLista.dataset.prioridad || "media";
+
+              const res = await fetch(`${API_URL}/tareas/${tareaId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                  texto: textoNuevo.trim(), 
+                  completada, 
+                  fecha, 
+                  prioridad,
+                  usuario_id: usuarioActivo.id 
+                })
+              });
+              
+              if (!res.ok) throw new Error("Error al actualizar");
+              
+              // Recargar desde el backend
+              await cargarTareasDesdeAPI(usuarioActivo.id);
+              mostrarMensaje("Tarea actualizada", "exito");
+            } catch (err) {
+              mostrarMensaje("Error al actualizar tarea en el servidor", "error");
+              console.error(err);
+            }
+          } else {
+            guardarTareas();
+          }
         }
       };
 
-      const eliminarTarea = (elementoLista) => {
-        elementoLista.remove();
-        guardarTareas();
-        cargarTareas();
+      const eliminarTarea = async (elementoLista) => {
+        const tareaId = elementoLista.dataset.tareaId;
+        
+        // Eliminar del backend
+        if (tareaId) {
+          try {
+            const res = await fetch(`${API_URL}/tareas/${tareaId}`, {
+              method: "DELETE"
+            });
+            
+            if (!res.ok) throw new Error("Error al eliminar");
+            
+            // Recargar tareas desde el backend después de eliminar
+            await cargarTareasDesdeAPI(usuarioActivo.id);
+            mostrarMensaje("Tarea eliminada", "exito");
+          } catch (err) {
+            mostrarMensaje("Error al eliminar tarea del servidor", "error");
+            console.error(err);
+            return;
+          }
+        } else {
+          // Si no tiene ID (tarea local), eliminar solo del DOM
+          elementoLista.remove();
+          guardarTareas();
+        }
       };
 
       const crearBotonesAccion = (tarea, elementoLista, elementoTexto) => {
@@ -701,7 +848,7 @@
         const botonEditar = document.createElement("button");
         botonEditar.textContent = "Editar";
         botonEditar.className = "edit";
-        botonEditar.addEventListener("click", () => editarTarea(elementoTexto));
+        botonEditar.addEventListener("click", () => editarTarea(elementoTexto, elementoLista));
 
         const botonEliminar = document.createElement("button");
         botonEliminar.textContent = "Eliminar";
@@ -720,6 +867,10 @@
         if (datosTarea.completada) elementoLista.classList.add("completada");
         elementoLista.dataset.date = datosTarea.fecha || "";
         elementoLista.dataset.prioridad = datosTarea.prioridad || "media";
+        // IMPORTANTE: Guardar el ID que viene del backend
+        if (datosTarea.id) {
+          elementoLista.dataset.tareaId = datosTarea.id;
+        }
 
         const seccionInformacion = crearSeccionInformacion(datosTarea);
         const elementoTexto = seccionInformacion.querySelector(".task-text");
@@ -744,7 +895,7 @@
           return false;
         }
         return true;
-      };
+};
 
       const validarTareaUnica = (textoNuevo) => {
         const textosExistentes = Array.from(listaElementosTarea.querySelectorAll(".task-text"));
@@ -764,7 +915,7 @@
         elementoPrioridad.value = "media";
       };
 
-      const procesarNuevaTarea = () => {
+      const procesarNuevaTarea = async () => {
         const textoTarea = elementoEntradaTarea.value.trim();
         const fechaTarea = elementoFechaTarea.value;
         const prioridad = elementoPrioridad.value;
@@ -777,9 +928,30 @@
           texto: textoTarea, 
           completada: false, 
           fecha: fechaTarea,
-          prioridad: prioridad 
+          prioridad: prioridad,
+          usuario_id: usuarioActivo.id
         };
 
+        try {
+          // Guardar en backend
+          const res = await fetch(`${API_URL}/tareas`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(nuevaTarea)
+          });
+          const data = await res.json();
+          if (!res.ok || !data.success) throw data;
+
+          // Añadir al DOM
+          anadirTareaAlDOM(data.tarea);
+          limpiarCamposEntrada();
+          guardarTareas();
+          cargarTareas();
+          mostrarMensaje("Tarea añadida", "exito");
+        } catch (err) {
+          mostrarMensaje("Error al guardar tarea en el servidor", "error");
+          console.error(err);
+        }
         anadirTareaAlDOM(nuevaTarea);
         limpiarCamposEntrada();
         guardarTareas();
@@ -804,12 +976,28 @@
         });
       };
 
-      const eliminarTodasLasTareas = () => {
+      const eliminarTodasLasTareas = async () => {
         if (!listaElementosTarea.children.length) {
           return mostrarMensaje("No hay tareas para borrar", "advertencia");
         }
         const confirmacion = confirm("¿Seguro que quieres borrar todas?");
         if (confirmacion) {
+          // Eliminar del backend
+          try {
+            const res = await fetch(`${API_URL}/tareas/usuario/${usuarioActivo.id}`, {
+              method: "DELETE"
+            });
+            
+            if (!res.ok) throw new Error("Error al eliminar");
+            
+            // Recargar desde el backend
+            await cargarTareasDesdeAPI(usuarioActivo.id);
+            localStorage.removeItem(CLAVE_ALMACENAMIENTO);
+            mostrarMensaje("Todas las tareas eliminadas", "exito");
+          } catch (err) {
+            mostrarMensaje("Error al eliminar tareas del servidor", "error");
+            console.error(err);
+          }
           listaElementosTarea.innerHTML = "";
           localStorage.removeItem(CLAVE_ALMACENAMIENTO);
           mostrarMensaje("Todas las tareas eliminadas", "exito");
