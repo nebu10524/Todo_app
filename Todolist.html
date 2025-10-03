@@ -338,8 +338,23 @@
         <button id="volverLogin" class="btn-secondary">Volver al Inicio de Sesión</button>
       </div>
     </div>
+    <div class="text-center">
+      ¿No tienes cuenta? <a id="irARegistro">Regístrate aquí</a>
+    </div>
   </div>
-
+  <!-- Pantalla de Registro -->
+  <div class="contenedor" id="registroContainer" style="display:none;">
+    <h1>Crear Cuenta Nueva</h1>
+    <div class="auth-form">
+      <input type="text" id="registroUsuario" placeholder="Nombre de Usuario" />
+      <input type="email" id="registroEmail" placeholder="Email" />
+      <input type="password" id="registroPassword" placeholder="Contraseña" />
+      <div class="auth-buttons">
+        <button id="btnRegistro" class="btn-success">Registrarse</button>
+        <button id="volverLogin" class="btn-secondary">Volver al Inicio de Sesión</button>
+      </div>
+    </div>
+  </div>
   <!-- Pantalla de Tareas -->
   <div class="contenedor" id="tareasContainer" style="display:none;">
     <div class="user-header">
@@ -391,8 +406,8 @@
         registroContainer.style.display = "none";
         loginContainer.style.display = "block";
       });
-
       // Funciones de API
+      // ========== FUNCIONES DE API ==========
       const API_URL = "http://127.0.0.1:5000";
 
       async function loginAPI(email, password) {
@@ -433,7 +448,7 @@
           mostrarMensaje("Error de conexión al cargar tareas", "error");
         }
       }
-
+      // ========== GESTIÓN DE AUTENTICACIÓN ==========
       const cargarSesion = () => {
         const sesion = JSON.parse(sessionStorage.getItem("usuarioActivo"));
         if (sesion) {
@@ -462,8 +477,8 @@
         registroContainer.style.display = "none";
         tareasContainer.style.display = "block";
       };
-
       // Login
+      // ========== EVENTOS DE LOGIN ==========
       document.getElementById("btnLogin").addEventListener("click", async () => {
         try {
           const email = document.getElementById("loginEmail").value.trim();
@@ -519,11 +534,142 @@
           const mensajeError = err?.body?.message || err?.message || "Error al registrar usuario";
           mostrarMensaje(mensajeError, "error");
         }
+
+          if (!email || !password) {
+            mostrarMensaje("Completa todos los campos", "error");
+            return;
+          }
+
+          const u = await loginAPI(email, password);
+          usuarioActivo = u;
+          guardarSesion();
+          mostrarMensaje(`Bienvenido ${u.usuario}`, "exito");
+          mostrarPantallaTareas();
+          await cargarTareasDesdeAPI(u.id);
+        } catch (err) {
+          if (err.status === 401) {
+            mostrarMensaje("Credenciales incorrectas", "error");
+          } else {
+            mostrarMensaje("Error en login", "error");
+          }
+        }
+      });
+
+      // ========== EVENTOS DE REGISTRO ==========
+      document.getElementById("btnRegistro").addEventListener("click", async () => {
+        try {
+          const usuario = document.getElementById("registroUsuario").value.trim();
+          const email = document.getElementById("registroEmail").value.trim();
+          const password = document.getElementById("registroPassword").value.trim();
+
+          if (!usuario || !email || !password) {
+            mostrarMensaje("Completa todos los campos", "error");
+            return;
+          }
+
+          const res = await registrarAPI(usuario, email, password);
+          mostrarMensaje(res.message || "Usuario registrado exitosamente", "exito");
+          
+          // Limpiar campos
+          document.getElementById("registroUsuario").value = "";
+          document.getElementById("registroEmail").value = "";
+          document.getElementById("registroPassword").value = "";
+          
+          // Volver al login después de 2 segundos
+          setTimeout(() => {
+            registroContainer.style.display = "none";
+            loginContainer.style.display = "block";
+          }, 2000);
+        } catch (err) {
+          console.error("Error completo:", err);
+          const mensajeError = err?.body?.message || err?.message || "Error al registrar usuario";
+          mostrarMensaje(mensajeError, "error");
+        }
+
+
+          const u = await loginAPI(email, password);
+          usuarioActivo = u;
+          guardarSesion();
+          mostrarMensaje(`Bienvenido ${u.usuario}`, "exito");
+          mostrarPantallaTareas();
+        } catch (err) {
+          if (err.status === 401) {
+            mostrarMensaje("Credenciales incorrectas", "error");
+          } else {
+            mostrarMensaje("Error en login", "error");
+          }
+        }
+      });
+
+      // ========== EVENTOS DE REGISTRO ==========
+      document.getElementById("btnRegistro").addEventListener("click", async () => {
+        try {
+          const usuario = document.getElementById("registroUsuario").value.trim();
+          const email = document.getElementById("registroEmail").value.trim();
+          const password = document.getElementById("registroPassword").value.trim();
+
+          if (!usuario || !email || !password) {
+            mostrarMensaje("Completa todos los campos", "error");
+            return;
+          }
+
+          const res = await registrarAPI(usuario, email, password);
+          mostrarMensaje(res.message || "Usuario registrado exitosamente", "exito");
+          
+          // Limpiar campos
+          document.getElementById("registroUsuario").value = "";
+          document.getElementById("registroEmail").value = "";
+          document.getElementById("registroPassword").value = "";
+          
+          // Volver al login después de 2 segundos
+          setTimeout(() => {
+            registroContainer.style.display = "none";
+            loginContainer.style.display = "block";
+          }, 2000);
+        } catch (err) {
+          console.error("Error completo:", err);
+          const mensajeError = err?.body?.message || err?.message || "Error al registrar usuario";
+          mostrarMensaje(mensajeError, "error");
+        }
+
+      document.getElementById("btnLogin").addEventListener("click", () => {
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value.trim();
+
+        if (!email || !password) {
+          mostrarMensaje("Completa todos los campos", "error");
+          return;
+        }
+
+        // Simulación de login (aquí conectarás con Flask)
+        usuarioActivo = { usuario: email.split('@')[0], email };
+        guardarSesion();
+        mostrarMensaje(`Bienvenido ${usuarioActivo.usuario}`, "exito");
+        mostrarPantallaTareas();
+      });
+
+      document.getElementById("btnRegistro").addEventListener("click", () => {
+        const usuario = document.getElementById("registroUsuario").value.trim();
+        const email = document.getElementById("registroEmail").value.trim();
+        const password = document.getElementById("registroPassword").value.trim();
+
+        if (!usuario || !email || !password) {
+          mostrarMensaje("Completa todos los campos", "error");
+          return;
+        }
+
+        mostrarMensaje("Usuario registrado exitosamente", "exito");
+        
+        // Volver al login
+        setTimeout(() => {
+          registroContainer.style.display = "none";
+          loginContainer.style.display = "block";
+        }, 2000);
       });
 
       document.getElementById("btnLogout").addEventListener("click", cerrarSesion);
-
       // Sistema de tareas
+      // ========== SISTEMA DE TAREAS ==========
       const elementoEntradaTarea = document.getElementById("entradaTarea");
       const elementoFechaTarea = document.getElementById("fechaLimite");
       const elementoPrioridad = document.getElementById("prioridadTarea");
@@ -811,7 +957,7 @@
           return false;
         }
         return true;
-      };
+};
 
       const validarTareaUnica = (textoNuevo) => {
         const textosExistentes = Array.from(listaElementosTarea.querySelectorAll(".task-text"));
@@ -868,6 +1014,11 @@
           mostrarMensaje("Error al guardar tarea en el servidor", "error");
           console.error(err);
         }
+        anadirTareaAlDOM(nuevaTarea);
+        limpiarCamposEntrada();
+        guardarTareas();
+        cargarTareas();
+        mostrarMensaje("Tarea añadida", "exito");
       };
 
       const debeElementoMostrarseConFiltro = (elementoLista, valorFiltro) => {
@@ -909,6 +1060,9 @@
             mostrarMensaje("Error al eliminar tareas del servidor", "error");
             console.error(err);
           }
+          listaElementosTarea.innerHTML = "";
+          localStorage.removeItem(CLAVE_ALMACENAMIENTO);
+          mostrarMensaje("Todas las tareas eliminadas", "exito");
         }
       };
 
