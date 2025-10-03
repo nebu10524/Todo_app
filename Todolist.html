@@ -36,15 +36,15 @@
       font-weight: 600; 
     }
 
-    /* Estilos para el formulario de login */
-    .login-form {
+    /* Estilos para formularios de login y registro */
+    .auth-form {
       display: flex;
       flex-direction: column;
       gap: 15px;
       margin-top: 20px;
     }
 
-    .login-form input {
+    .auth-form input {
       width: 100%;
       padding: 12px;
       border: none;
@@ -54,14 +54,15 @@
       background: rgba(255, 255, 255, 0.9);
     }
 
-    .login-buttons {
+    .auth-buttons {
       display: flex;
+      flex-direction: column;
       gap: 10px;
       margin-top: 10px;
     }
 
-    .login-buttons button {
-      flex: 1;
+    .auth-buttons button {
+      width: 100%;
       padding: 12px;
       border: none;
       border-radius: 8px;
@@ -71,24 +72,53 @@
       transition: all 0.3s ease;
     }
 
-    #btnLogin {
+    .btn-primary {
       background: #00c6ff;
       color: white;
     }
 
-    #btnLogin:hover {
+    .btn-primary:hover {
       background: #0096c7;
       transform: scale(1.05);
     }
 
-    #btnRegistro {
+    .btn-success {
       background: #28a745;
       color: white;
     }
 
-    #btnRegistro:hover {
+    .btn-success:hover {
       background: #1e7e34;
       transform: scale(1.05);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 14px;
+      padding: 10px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.02);
+    }
+
+    .text-center {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .text-center a {
+      color: #00c6ff;
+      cursor: pointer;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    .text-center a:hover {
+      color: #0096c7;
     }
 
     /* Header de usuario logueado */
@@ -281,23 +311,37 @@
   </style>
 </head>
 <body>
-  <!-- 🔐 Pantalla de Login -->
+  <!-- Pantalla de Inicio de Sesión -->
   <div class="contenedor" id="loginContainer">
-    <h1>👤 Iniciar Sesión</h1>
-    <div class="login-form">
-      <input type="text" id="loginUsuario" placeholder="Usuario" />
+    <h1>Iniciar Sesión</h1>
+    <div class="auth-form">
       <input type="email" id="loginEmail" placeholder="Email" />
       <input type="password" id="loginPassword" placeholder="Contraseña" />
-      <div class="login-buttons">
-        <button id="btnLogin">Iniciar Sesión</button>
-        <button id="btnRegistro">Registrarse</button>
+      <div class="auth-buttons">
+        <button id="btnLogin" class="btn-primary">Iniciar Sesión</button>
+      </div>
+    </div>
+    <div class="text-center">
+      ¿No tienes cuenta? <a id="irARegistro">Regístrate aquí</a>
+    </div>
+  </div>
+
+  <!-- Pantalla de Registro -->
+  <div class="contenedor" id="registroContainer" style="display:none;">
+    <h1>Crear Cuenta Nueva</h1>
+    <div class="auth-form">
+      <input type="text" id="registroUsuario" placeholder="Nombre de Usuario" />
+      <input type="email" id="registroEmail" placeholder="Email" />
+      <input type="password" id="registroPassword" placeholder="Contraseña" />
+      <div class="auth-buttons">
+        <button id="btnRegistro" class="btn-success">Registrarse</button>
+        <button id="volverLogin" class="btn-secondary">Volver al Inicio de Sesión</button>
       </div>
     </div>
   </div>
 
-  <!-- 📌 Pantalla de Tareas -->
+  <!-- Pantalla de Tareas -->
   <div class="contenedor" id="tareasContainer" style="display:none;">
-    <!-- Header con info del usuario -->
     <div class="user-header">
       <div class="user-info">
         <strong id="nombreUsuario"></strong><br>
@@ -306,14 +350,14 @@
       <button id="btnLogout">Cerrar Sesión</button>
     </div>
 
-    <h1>📌 Lista de Tareas</h1>
+    <h1>Lista de Tareas</h1>
     <div>
       <input type="text" id="entradaTarea" placeholder="Escribe una tarea..." autofocus />
       <input type="date" id="fechaLimite" />
       <select id="prioridadTarea">
-        <option value="alta">Alta 🔥</option>
-        <option value="media" selected>Media ⚡</option>
-        <option value="baja">Baja 💤</option>
+        <option value="alta">Alta</option>
+        <option value="media" selected>Media</option>
+        <option value="baja">Baja</option>
       </select>
       <button id="btnAgregar" type="button">Añadir</button>
     </div>
@@ -326,8 +370,8 @@
       </select>
     </div>
     <ul id="listaTareas"></ul>
-    <button id="btnEliminarTodas">🗑 Eliminar todas</button>
-    <button id="btnExportar">📂 Exportar tareas</button>
+    <button id="btnEliminarTodas">Eliminar todas</button>
+    <button id="btnExportar">Exportar tareas</button>
   </div>
 
   <script>
@@ -335,7 +379,61 @@
       // ========== VARIABLES GLOBALES ==========
       let usuarioActivo = null;
       const loginContainer = document.getElementById("loginContainer");
+      const registroContainer = document.getElementById("registroContainer");
       const tareasContainer = document.getElementById("tareasContainer");
+
+      // Navegación entre pantallas
+      document.getElementById("irARegistro").addEventListener("click", () => {
+        loginContainer.style.display = "none";
+        registroContainer.style.display = "block";
+      });
+
+      document.getElementById("volverLogin").addEventListener("click", () => {
+        registroContainer.style.display = "none";
+        loginContainer.style.display = "block";
+      });
+
+      // ========== FUNCIONES DE API ==========
+      const API_URL = "http://127.0.0.1:5000";
+
+      async function loginAPI(email, password) {
+        const res = await fetch(`${API_URL}/login`, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw { status: res.status, body: data };
+        return data.usuario;
+      }
+
+      async function registrarAPI(usuario, email, password) {
+        const res = await fetch(`${API_URL}/usuarios`, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({ usuario, email, password })
+        });
+        const data = await res.json();
+        if (!res.ok) throw { status: res.status, body: data };
+        return data;
+      }
+
+      async function cargarTareasDesdeAPI(usuarioId) {
+        try {
+          const res = await fetch(`${API_URL}/tareas?usuario_id=${usuarioId}`);
+          const data = await res.json();
+          if (!data.success) {
+            mostrarMensaje("Error al cargar tareas desde API", "error");
+            return;
+          }
+          listaElementosTarea.innerHTML = "";
+          data.tareas.forEach(tarea => {
+            anadirTareaAlDOM(tarea);
+          });
+        } catch (err) {
+          mostrarMensaje("Error de conexión al cargar tareas", "error");
+        }
+      }
 
       // ========== GESTIÓN DE AUTENTICACIÓN ==========
       const cargarSesion = () => {
@@ -354,42 +452,80 @@
         usuarioActivo = null;
         sessionStorage.removeItem("usuarioActivo");
         loginContainer.style.display = "block";
+        registroContainer.style.display = "none";
         tareasContainer.style.display = "none";
-        mostrarMensaje("Sesión cerrada 👋", "exito");
+        mostrarMensaje("Sesión cerrada", "exito");
       };
 
       const mostrarPantallaTareas = () => {
-        document.getElementById("nombreUsuario").textContent = `👤 ${usuarioActivo.usuario}`;
+        document.getElementById("nombreUsuario").textContent = usuarioActivo.usuario;
         document.getElementById("emailUsuario").textContent = usuarioActivo.email;
         loginContainer.style.display = "none";
+        registroContainer.style.display = "none";
         tareasContainer.style.display = "block";
       };
 
       // ========== EVENTOS DE LOGIN ==========
-      document.getElementById("btnLogin").addEventListener("click", () => {
-        const usuario = document.getElementById("loginUsuario").value.trim();
-        const email = document.getElementById("loginEmail").value.trim();
-        const password = document.getElementById("loginPassword").value.trim();
+      document.getElementById("btnLogin").addEventListener("click", async () => {
+        try {
+          const email = document.getElementById("loginEmail").value.trim();
+          const password = document.getElementById("loginPassword").value.trim();
 
-        if (!usuario || !email || !password) {
-          mostrarMensaje("Completa todos los campos", "error");
-          return;
+          if (!email || !password) {
+            mostrarMensaje("Completa todos los campos", "error");
+            return;
+          }
+
+          const u = await loginAPI(email, password);
+          usuarioActivo = u;
+          guardarSesion();
+          mostrarMensaje(`Bienvenido ${u.usuario}`, "exito");
+          mostrarPantallaTareas();
+          await cargarTareasDesdeAPI(u.id);
+        } catch (err) {
+          if (err.status === 401) {
+            mostrarMensaje("Credenciales incorrectas", "error");
+          } else {
+            mostrarMensaje("Error en login", "error");
+          }
         }
-
-        // Simulación de login (aquí conectarás con Flask)
-        usuarioActivo = { usuario, email };
-        guardarSesion();
-        mostrarMensaje(`¡Bienvenido ${usuarioActivo.usuario}! 🎉`, "exito");
-        mostrarPantallaTareas();
       });
 
-      document.getElementById("btnRegistro").addEventListener("click", () => {
-        mostrarMensaje("Registro pendiente (conectar con API Flask)", "advertencia");
+      // ========== EVENTOS DE REGISTRO ==========
+      document.getElementById("btnRegistro").addEventListener("click", async () => {
+        try {
+          const usuario = document.getElementById("registroUsuario").value.trim();
+          const email = document.getElementById("registroEmail").value.trim();
+          const password = document.getElementById("registroPassword").value.trim();
+
+          if (!usuario || !email || !password) {
+            mostrarMensaje("Completa todos los campos", "error");
+            return;
+          }
+
+          const res = await registrarAPI(usuario, email, password);
+          mostrarMensaje(res.message || "Usuario registrado exitosamente", "exito");
+          
+          // Limpiar campos
+          document.getElementById("registroUsuario").value = "";
+          document.getElementById("registroEmail").value = "";
+          document.getElementById("registroPassword").value = "";
+          
+          // Volver al login después de 2 segundos
+          setTimeout(() => {
+            registroContainer.style.display = "none";
+            loginContainer.style.display = "block";
+          }, 2000);
+        } catch (err) {
+          console.error("Error completo:", err);
+          const mensajeError = err?.body?.message || err?.message || "Error al registrar usuario";
+          mostrarMensaje(mensajeError, "error");
+        }
       });
 
       document.getElementById("btnLogout").addEventListener("click", cerrarSesion);
 
-      // ========== SISTEMA DE TAREAS (SIN MODIFICAR) ==========
+      // ========== SISTEMA DE TAREAS ==========
       const elementoEntradaTarea = document.getElementById("entradaTarea");
       const elementoFechaTarea = document.getElementById("fechaLimite");
       const elementoPrioridad = document.getElementById("prioridadTarea");
@@ -452,7 +588,7 @@
           enlace.download = "tareas.json";
           enlace.click();
           setTimeout(() => URL.revokeObjectURL(url), 1000);
-          mostrarMensaje("Tareas exportadas 📂", "exito");
+          mostrarMensaje("Tareas exportadas", "exito");
         } catch (error) {
           mostrarMensaje("Error al exportar: " + error.message, "error");
         }
@@ -474,7 +610,7 @@
 
       const crearElementoFecha = (fechaTarea) => {
         const elementoFechaLimite = document.createElement("small");
-        elementoFechaLimite.textContent = `📅 Límite: ${fechaTarea}`;
+        elementoFechaLimite.textContent = `Límite: ${fechaTarea}`;
         const claseFecha = obtenerClaseFecha(fechaTarea);
         if (claseFecha) {
           elementoFechaLimite.classList.add(claseFecha);
@@ -496,12 +632,12 @@
           contenedorInformacion.appendChild(elementoFecha);
         } else {
           const elementoFecha = document.createElement("small");
-          elementoFecha.textContent = "📅 Sin fecha";
+          elementoFecha.textContent = "Sin fecha";
           contenedorInformacion.appendChild(elementoFecha);
         }
 
         const elementoPrioridad = document.createElement("small");
-        elementoPrioridad.textContent = `🔥 Prioridad: ${tarea.prioridad}`;
+        elementoPrioridad.textContent = `Prioridad: ${tarea.prioridad}`;
         contenedorInformacion.appendChild(elementoPrioridad);
 
         return contenedorInformacion;
@@ -512,27 +648,110 @@
         boton.textContent = estaCompletada ? "Desmarcar" : "Completar";
       };
 
-      const alternarEstadoCompletado = (elementoLista, botonAlternar) => {
+      const alternarEstadoCompletado = async (elementoLista, botonAlternar) => {
+        const tareaId = elementoLista.dataset.tareaId;
         elementoLista.classList.toggle("completada");
         actualizarBotonCompletar(botonAlternar, elementoLista);
-        guardarTareas();
-        cargarTareas();
+        
+        // Actualizar en backend
+        if (tareaId) {
+          try {
+            const completada = elementoLista.classList.contains("completada");
+            const texto = elementoLista.querySelector(".task-text").textContent;
+            const fecha = elementoLista.dataset.date || null;
+            const prioridad = elementoLista.dataset.prioridad || "media";
+
+            const res = await fetch(`${API_URL}/tareas/${tareaId}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ 
+                texto, 
+                completada, 
+                fecha, 
+                prioridad,
+                usuario_id: usuarioActivo.id 
+              })
+            });
+            
+            if (!res.ok) throw new Error("Error al actualizar");
+            
+            // Recargar desde el backend para asegurar sincronización
+            await cargarTareasDesdeAPI(usuarioActivo.id);
+          } catch (err) {
+            mostrarMensaje("Error al actualizar tarea en el servidor", "error");
+            console.error(err);
+          }
+        } else {
+          guardarTareas();
+        }
       };
 
-      const editarTarea = (elementoTexto) => {
+      const editarTarea = async (elementoTexto, elementoLista) => {
         const textoActual = elementoTexto.textContent;
         const textoNuevo = prompt("Editar tarea:", textoActual);
         if (textoNuevo && textoNuevo.trim()) {
           elementoTexto.textContent = textoNuevo.trim();
-          guardarTareas();
-          cargarTareas();
+          
+          // Actualizar en backend
+          const tareaId = elementoLista.dataset.tareaId;
+          if (tareaId) {
+            try {
+              const completada = elementoLista.classList.contains("completada");
+              const fecha = elementoLista.dataset.date || null;
+              const prioridad = elementoLista.dataset.prioridad || "media";
+
+              const res = await fetch(`${API_URL}/tareas/${tareaId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                  texto: textoNuevo.trim(), 
+                  completada, 
+                  fecha, 
+                  prioridad,
+                  usuario_id: usuarioActivo.id 
+                })
+              });
+              
+              if (!res.ok) throw new Error("Error al actualizar");
+              
+              // Recargar desde el backend
+              await cargarTareasDesdeAPI(usuarioActivo.id);
+              mostrarMensaje("Tarea actualizada", "exito");
+            } catch (err) {
+              mostrarMensaje("Error al actualizar tarea en el servidor", "error");
+              console.error(err);
+            }
+          } else {
+            guardarTareas();
+          }
         }
       };
 
-      const eliminarTarea = (elementoLista) => {
-        elementoLista.remove();
-        guardarTareas();
-        cargarTareas();
+      const eliminarTarea = async (elementoLista) => {
+        const tareaId = elementoLista.dataset.tareaId;
+        
+        // Eliminar del backend
+        if (tareaId) {
+          try {
+            const res = await fetch(`${API_URL}/tareas/${tareaId}`, {
+              method: "DELETE"
+            });
+            
+            if (!res.ok) throw new Error("Error al eliminar");
+            
+            // Recargar tareas desde el backend después de eliminar
+            await cargarTareasDesdeAPI(usuarioActivo.id);
+            mostrarMensaje("Tarea eliminada", "exito");
+          } catch (err) {
+            mostrarMensaje("Error al eliminar tarea del servidor", "error");
+            console.error(err);
+            return;
+          }
+        } else {
+          // Si no tiene ID (tarea local), eliminar solo del DOM
+          elementoLista.remove();
+          guardarTareas();
+        }
       };
 
       const crearBotonesAccion = (tarea, elementoLista, elementoTexto) => {
@@ -547,7 +766,7 @@
         const botonEditar = document.createElement("button");
         botonEditar.textContent = "Editar";
         botonEditar.className = "edit";
-        botonEditar.addEventListener("click", () => editarTarea(elementoTexto));
+        botonEditar.addEventListener("click", () => editarTarea(elementoTexto, elementoLista));
 
         const botonEliminar = document.createElement("button");
         botonEliminar.textContent = "Eliminar";
@@ -566,6 +785,10 @@
         if (datosTarea.completada) elementoLista.classList.add("completada");
         elementoLista.dataset.date = datosTarea.fecha || "";
         elementoLista.dataset.prioridad = datosTarea.prioridad || "media";
+        // IMPORTANTE: Guardar el ID que viene del backend
+        if (datosTarea.id) {
+          elementoLista.dataset.tareaId = datosTarea.id;
+        }
 
         const seccionInformacion = crearSeccionInformacion(datosTarea);
         const elementoTexto = seccionInformacion.querySelector(".task-text");
@@ -590,7 +813,7 @@
           return false;
         }
         return true;
-      };
+};
 
       const validarTareaUnica = (textoNuevo) => {
         const textosExistentes = Array.from(listaElementosTarea.querySelectorAll(".task-text"));
@@ -598,7 +821,7 @@
           elemento.textContent.toLowerCase() === textoNuevo.toLowerCase()
         );
         if (existe) {
-          mostrarMensaje("⚠️ Esa tarea ya existe", "advertencia");
+          mostrarMensaje("Esa tarea ya existe", "advertencia");
           return false;
         }
         return true;
@@ -610,7 +833,7 @@
         elementoPrioridad.value = "media";
       };
 
-      const procesarNuevaTarea = () => {
+      const procesarNuevaTarea = async () => {
         const textoTarea = elementoEntradaTarea.value.trim();
         const fechaTarea = elementoFechaTarea.value;
         const prioridad = elementoPrioridad.value;
@@ -623,14 +846,30 @@
           texto: textoTarea, 
           completada: false, 
           fecha: fechaTarea,
-          prioridad: prioridad 
+          prioridad: prioridad,
+          usuario_id: usuarioActivo.id
         };
 
-        anadirTareaAlDOM(nuevaTarea);
-        limpiarCamposEntrada();
-        guardarTareas();
-        cargarTareas();
-        mostrarMensaje("Tarea añadida ✅", "exito");
+        try {
+          // Guardar en backend
+          const res = await fetch(`${API_URL}/tareas`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(nuevaTarea)
+          });
+          const data = await res.json();
+          if (!res.ok || !data.success) throw data;
+
+          // Añadir al DOM
+          anadirTareaAlDOM(data.tarea);
+          limpiarCamposEntrada();
+          guardarTareas();
+          cargarTareas();
+          mostrarMensaje("Tarea añadida", "exito");
+        } catch (err) {
+          mostrarMensaje("Error al guardar tarea en el servidor", "error");
+          console.error(err);
+        }
       };
 
       const debeElementoMostrarseConFiltro = (elementoLista, valorFiltro) => {
@@ -650,15 +889,28 @@
         });
       };
 
-      const eliminarTodasLasTareas = () => {
+      const eliminarTodasLasTareas = async () => {
         if (!listaElementosTarea.children.length) {
           return mostrarMensaje("No hay tareas para borrar", "advertencia");
         }
         const confirmacion = confirm("¿Seguro que quieres borrar todas?");
         if (confirmacion) {
-          listaElementosTarea.innerHTML = "";
-          localStorage.removeItem(CLAVE_ALMACENAMIENTO);
-          mostrarMensaje("Todas las tareas eliminadas 🗑", "exito");
+          // Eliminar del backend
+          try {
+            const res = await fetch(`${API_URL}/tareas/usuario/${usuarioActivo.id}`, {
+              method: "DELETE"
+            });
+            
+            if (!res.ok) throw new Error("Error al eliminar");
+            
+            // Recargar desde el backend
+            await cargarTareasDesdeAPI(usuarioActivo.id);
+            localStorage.removeItem(CLAVE_ALMACENAMIENTO);
+            mostrarMensaje("Todas las tareas eliminadas", "exito");
+          } catch (err) {
+            mostrarMensaje("Error al eliminar tareas del servidor", "error");
+            console.error(err);
+          }
         }
       };
 
