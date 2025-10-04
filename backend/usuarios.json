@@ -1,0 +1,32 @@
+{
+    "U001": {
+        "id": "U001",
+        "usuario": "andy",
+        "email": "torresandy789123@gmail.com",
+        "password": "10524andy"
+    },
+    "U002": {
+        "id": "U002",
+        "usuario": "andy",
+        "email": "74882175@continental.edu.pe",
+        "password": "10524andy"
+    },
+    "U003": {
+        "id": "U003",
+        "usuario": "xiomara",
+        "email": "72317175@continental.edu.pe",
+        "password": "10524andy"
+    },
+    "U004": {
+        "id": "U004",
+        "usuario": "andy",
+        "email": "torres@gmail.com",
+        "password": "10524andy"
+    },
+    "U005": {
+        "id": "U005",
+        "usuario": "maria",
+        "email": "mari@gmail.com",
+        "password": "10524andy"
+    }
+}
