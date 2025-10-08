@@ -1,7 +1,7 @@
 \# Todo App - Integración Backend
 
 
-\## 👨‍💻 Integrantes
+\## Integrantes
 
 \- Mejía Cosíos, Xiomara Andrea
 
@@ -12,7 +12,7 @@
 \- Gavilán Arestegui, Saitd Diraks
 
 
-\## ✨ Nueva Funcionalidad
+\## Nueva Funcionalidad
 
 Integración del \*\*backend\*\* con la aplicación de \*\*ToDo App\*\*.  
 
@@ -65,7 +65,7 @@ Se implementaron endpoints para gestionar \*\*usuarios\*\* y \*\*tareas\*\*, inc
 
 ---
 
-## 🚀 Cómo ejecutar
+## Cómo ejecutar
 
 1. **Arrancar el backend (API).**  
    - Abre la terminal **CMD** y dirígete a la carpeta:
@@ -116,7 +116,7 @@ Se implementaron endpoints para gestionar \*\*usuarios\*\* y \*\*tareas\*\*, inc
 - **DELETE /tareas/{id}** → Se usa cuando eliminas una tarea individual de tu lista.  
 - **DELETE /tareas/usuario/{usuario_id}** → Sirve cuando se eliminan todas las tareas de un usuario, por ejemplo, si el usuario borra su cuenta o reinicia su lista.  
 
-\## 📂 Estructura de carpetas
+\## Estructura de carpetas
 
 Todo\_app/
 
