@@ -68,20 +68,20 @@ En la terminal donde está corriendo el backend presiona Ctrl+C.
 
 \## Lista de Endpoints implementados:
 
-\### Usuarios
-\- POST /usuarios → Se usa cuando una persona se registra por primera vez en la app para crear su cuenta.
-\- GET /usuarios → El sistema muestra la lista de todos los usuarios registrados (normalmente solo lo ve el sistema o el administrador).
-\- GET /usuarios/{id} → Sirve para buscar la información de un usuario específico, como su nombre o sus tareas (normalmente solo lo ve el sistema o el administrador).
-\- PUT /usuarios/{id} → Se usa cuando el usuario cambia algo en su perfil, por ejemplo, su nombre o contraseña.
-\- DELETE /usuarios/{id} → Se usa cuando el usuario decide eliminar su cuenta de la app.
-  
-\### Tareas
-\- POST /tareas → Se activa cuando añades una nueva tarea en la lista (“Agregar tarea”).
-\- GET /tareas → Sirve para mostrar todas las tareas guardadas cuando entras a la aplicación.
-\- GET /tareas/{id} → Se usa cuando quieres ver los detalles de una tarea específica, por ejemplo, para editarla o marcarla como completada.
-\- PUT /tareas/{id} → Se activa cuando modificas una tarea existente, como cambiar su texto o marcarla como “hecha”.
-\- DELETE /tareas/{id} → Se usa cuando eliminas una tarea individual de tu lista.
-\- DELETE /tareas/usuario/{usuario_id} → Sirve cuando se eliminan todas las tareas de un usuario, por ejemplo, si el usuario borra su cuenta o reinicia su lista.
+### Usuarios
+- **POST /usuarios** → Se usa cuando una persona se registra por primera vez en la app para crear su cuenta.  
+- **GET /usuarios** → El sistema muestra la lista de todos los usuarios registrados (normalmente solo lo ve el sistema o el administrador).  
+- **GET /usuarios/{id}** → Sirve para buscar la información de un usuario específico, como su nombre o sus tareas (normalmente solo lo ve el sistema o el administrador).  
+- **PUT /usuarios/{id}** → Se usa cuando el usuario cambia algo en su perfil, por ejemplo, su nombre o contraseña.  
+- **DELETE /usuarios/{id}** → Se usa cuando el usuario decide eliminar su cuenta de la app.  
+
+### Tareas
+- **POST /tareas** → Se activa cuando añades una nueva tarea en la lista (“Agregar tarea”).  
+- **GET /tareas** → Sirve para mostrar todas las tareas guardadas cuando entras a la aplicación.  
+- **GET /tareas/{id}** → Se usa cuando quieres ver los detalles de una tarea específica, por ejemplo, para editarla o marcarla como completada.  
+- **PUT /tareas/{id}** → Se activa cuando modificas una tarea existente, como cambiar su texto o marcarla como “hecha”.  
+- **DELETE /tareas/{id}** → Se usa cuando eliminas una tarea individual de tu lista.  
+- **DELETE /tareas/usuario/{usuario_id}** → Sirve cuando se eliminan todas las tareas de un usuario, por ejemplo, si el usuario borra su cuenta o reinicia su lista.  
 
 \## 📂 Estructura de carpetas
 
