@@ -29,44 +29,75 @@ Se implementaron endpoints para gestionar \*\*usuarios\*\* y \*\*tareas\*\*, inc
 \- Persistencia de datos en archivos \*\*JSON\*\*  
 
 
-\## Cómo instalar aplicativo:
+## Cómo instalar el aplicativo
 
-1. Asegúrate de tener Python 3 instalado en tu máquina.
+1. **Asegúrate de tener Python 3 instalado en tu máquina.**  
+   - Entra al **CMD** y ejecuta los siguientes comandos:
+     ```bash
+     python --version
+     py --version
+     ```
+   - Si lo tienes instalado, salta los siguientes pasos.  
+   - Si no, continúa con el procedimiento:  
+     Descarga **Python 3** desde 👉 [https://www.python.org/downloads](https://www.python.org/downloads)  
+   - En **Windows**, al instalar marca la casilla **"Add Python to PATH"** (muy importante).
 
--Entras al CMD y pones estos comandos:
-python –version
-py –version
+---
 
--Si lo tienes salta los siguientes pasos y si no continua con el procedimiento
-Descarga Python 3: https://www.python.org/downloads
-En Windows, al instalar marca la casilla "Add Python to PATH" (muy importante).
+2. **Bajar el proyecto al PC.**  
+   - Descarga el **ZIP** desde GitHub haciendo clic en el cuadro verde donde dice **Code** (se descargará `Todo_app-main.zip`).  
+   - Extrae el archivo ZIP.  
+   - Al extraerlo, entra a la carpeta: verás otra carpeta con el mismo nombre.  
+   - Guarda esa carpeta en la ubicación que prefieras.  
+   - Cambia el nombre de la carpeta de `Todo_app-main` a **Todo_app**.
 
-2. Bajar el proyecto al PC
-\-Descarga el ZIP en el GitHub entrando en el cuadro de color verde donde dice Code. (te saldrá Todo_app-main.zip).
-\-Extrae el archivo, al extraerlo entra a la carpeta y te saldrá otra capeta con el mismo nombre esa capeta guárdalo en la ubicación que más desees.
-\-Cambia el nombre de la carpeta que estas cambiando de ubicación de Todo_app-main a Todo_app.
+---
 
-3. Instala las dependencias necesarias:
-  pip install flask flask-cors
+3. **Instala las dependencias necesarias.**  
+   - Abre una terminal en la carpeta del proyecto y ejecuta:
+     ```bash
+     pip install flask flask-cors
+     ```
 
-4. Listo — ya está instalado
+---
 
+4. **Listo — ya está instalado.**
 
-\## Cómo ejecutar:
+---
 
-1. Arrancar el backend (API)
-\- Abre la terminal CMD y dirígete a la carpeta Todo_app/backend en la ubicación en la que la guardaste
-\-Al encontrarte ahí ejecuta python app.py
+## 🚀 Cómo ejecutar
 
-2. Abrir la interfaz (frontend)
-\- Ve a la carpeta Todo_app/frontend
-\-La forma más simple: doble clic en Todolist.html para abrirlo en tu navegador o puedes también hacer click derecho y poner en abrir con y seleccionas el navegador que mas te guste.
+1. **Arrancar el backend (API).**  
+   - Abre la terminal **CMD** y dirígete a la carpeta:
+     ```bash
+     Todo_app/backend
+     ```
+   - Una vez dentro, ejecuta:
+     ```bash
+     python app.py
+     ```
 
-3.Despues de seguir todos estos pasos podrás usar la app con total normalidad.
+---
 
-4. Detener el backend
-En la terminal donde está corriendo el backend presiona Ctrl+C.
+2. **Abrir la interfaz (frontend).**  
+   - Ve a la carpeta:
+     ```bash
+     Todo_app/frontend
+     ```
+   - La forma más simple es hacer doble clic en **Todolist.html** para abrirlo en tu navegador.  
+   - También puedes hacer clic derecho → *Abrir con* → y seleccionar el navegador que más te guste.
 
+---
+
+3. **Después de seguir todos estos pasos podrás usar la app con total normalidad.**
+
+---
+
+4. **Detener el backend.**  
+   - En la terminal donde está corriendo el backend, presiona:
+     ```bash
+     Ctrl + C
+     ```
 
 \## Lista de Endpoints implementados:
 
