@@ -31,38 +31,40 @@ Se implementaron endpoints para gestionar \*\*usuarios\*\* y \*\*tareas\*\*, inc
 
 \## Cómo instalar aplicativo:
 
-\1. Asegúrate de tener Python 3 instalado en tu máquina.
-\-Entras al CMD y pones estos comandos:
+1. Asegúrate de tener Python 3 instalado en tu máquina.
+
+-Entras al CMD y pones estos comandos:
 python –version
 py –version
-\-Si lo tienes salta los siguientes pasos y si no continua con el procedimiento
+
+-Si lo tienes salta los siguientes pasos y si no continua con el procedimiento
 Descarga Python 3: https://www.python.org/downloads
 En Windows, al instalar marca la casilla "Add Python to PATH" (muy importante).
 
-\2. Bajar el proyecto al PC
+2. Bajar el proyecto al PC
 \-Descarga el ZIP en el GitHub entrando en el cuadro de color verde donde dice Code. (te saldrá Todo_app-main.zip).
 \-Extrae el archivo, al extraerlo entra a la carpeta y te saldrá otra capeta con el mismo nombre esa capeta guárdalo en la ubicación que más desees.
 \-Cambia el nombre de la carpeta que estas cambiando de ubicación de Todo_app-main a Todo_app.
 
-\3. Instala las dependencias necesarias:
+3. Instala las dependencias necesarias:
   pip install flask flask-cors
 
-\4. Listo — ya está instalado
+4. Listo — ya está instalado
 
 
 \## Cómo ejecutar:
 
-\1. Arrancar el backend (API)
+1. Arrancar el backend (API)
 \- Abre la terminal CMD y dirígete a la carpeta Todo_app/backend en la ubicación en la que la guardaste
 \-Al encontrarte ahí ejecuta python app.py
 
-\2. Abrir la interfaz (frontend)
+2. Abrir la interfaz (frontend)
 \- Ve a la carpeta Todo_app/frontend
 \-La forma más simple: doble clic en Todolist.html para abrirlo en tu navegador o puedes también hacer click derecho y poner en abrir con y seleccionas el navegador que mas te guste.
 
-\3.Despues de seguir todos estos pasos podrás usar la app con total normalidad.
+3.Despues de seguir todos estos pasos podrás usar la app con total normalidad.
 
-\4. Detener el backend
+4. Detener el backend
 En la terminal donde está corriendo el backend presiona Ctrl+C.
 
 
