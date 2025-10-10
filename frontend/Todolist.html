@@ -8,37 +8,33 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-
     body {
       font-family: "Poppins", sans-serif;
       min-height: 100vh;
       background: linear-gradient(135deg, #667eea, #764ba2);
-      display: flex;
-      justify-content: center;
+      display: flex; 
+      justify-content: center; 
       align-items: center;
       padding: 20px;
     }
-
 
     .contenedor {
       width: 100%;
       max-width: 650px;
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(15px);
-      padding: 30px;
+      padding: 30px; 
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
       color: white;
       animation: fadeIn 1s ease-in-out;
     }
 
-
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-weight: 600;
+    h1 { 
+      text-align: center; 
+      margin-bottom: 20px; 
+      font-weight: 600; 
     }
-
 
     /* Estilos para formularios de login y registro */
     .auth-form {
@@ -47,7 +43,6 @@
       gap: 15px;
       margin-top: 20px;
     }
-
 
     .auth-form input {
       width: 100%;
@@ -59,14 +54,12 @@
       background: rgba(255, 255, 255, 0.9);
     }
 
-
     .auth-buttons {
       display: flex;
       flex-direction: column;
       gap: 10px;
       margin-top: 10px;
     }
-
 
     .auth-buttons button {
       width: 100%;
@@ -79,30 +72,25 @@
       transition: all 0.3s ease;
     }
 
-
     .btn-primary {
       background: #00c6ff;
       color: white;
     }
-
 
     .btn-primary:hover {
       background: #0096c7;
       transform: scale(1.05);
     }
 
-
     .btn-success {
       background: #28a745;
       color: white;
     }
 
-
     .btn-success:hover {
       background: #1e7e34;
       transform: scale(1.05);
     }
-
 
     .btn-secondary {
       background: rgba(255, 255, 255, 0.2);
@@ -111,19 +99,16 @@
       padding: 10px;
     }
 
-
     .btn-secondary:hover {
       background: rgba(255, 255, 255, 0.3);
       transform: scale(1.02);
     }
-
 
     .text-center {
       text-align: center;
       margin-top: 15px;
       font-size: 14px;
     }
-
 
     .text-center a {
       color: #00c6ff;
@@ -132,11 +117,9 @@
       font-weight: bold;
     }
 
-
     .text-center a:hover {
       color: #0096c7;
     }
-
 
     /* Header de usuario logueado */
     .user-header {
@@ -149,18 +132,15 @@
       border-radius: 8px;
     }
 
-
     .user-info {
       font-size: 14px;
     }
-
 
     .user-actions {
       display: flex;
       gap: 10px;
       align-items: center;
     }
-
 
     #btnConfiguracion {
       background: rgba(255, 255, 255, 0.2);
@@ -173,12 +153,10 @@
       transition: all 0.3s ease;
     }
 
-
     #btnConfiguracion:hover {
       background: rgba(255, 255, 255, 0.3);
       transform: scale(1.1);
     }
-
 
     #btnLogout {
       background: #ff4b5c;
@@ -192,12 +170,10 @@
       transition: all 0.3s ease;
     }
 
-
     #btnLogout:hover {
       background: #c82333;
       transform: scale(1.05);
     }
-
 
     input, select {
       padding: 10px;
@@ -208,81 +184,70 @@
       margin-right: 8px;
     }
 
-
     input[type="text"] { width: 45%; }
     input[type="date"] { width: 25%; }
 
-
     button {
-      padding: 10px 18px;
-      border: none;
+      padding: 10px 18px; 
+      border: none; 
       border-radius: 8px;
-      cursor: pointer;
+      cursor: pointer; 
       font-size: 14px;
       transition: all 0.3s ease;
     }
 
-
-    #btnAgregar {
-      background: #00c6ff;
-      color: white;
-      font-weight: bold;
+    #btnAgregar { 
+      background: #00c6ff; 
+      color: white; 
+      font-weight: bold; 
     }
-    #btnAgregar:hover {
-      background: #0096c7;
-      transform: scale(1.05);
+    #btnAgregar:hover { 
+      background: #0096c7; 
+      transform: scale(1.05); 
     }
-
 
     #btnEliminarTodas, #btnExportar {
-      margin-top: 15px;
+      margin-top: 15px; 
       width: 100%;
-      color: white;
+      color: white; 
       font-weight: bold;
     }
-
 
     #btnEliminarTodas {
       background: #ff4b5c;
     }
 
-
-    #btnEliminarTodas:hover {
-      background: #c82333;
-      transform: scale(1.05);
+    #btnEliminarTodas:hover { 
+      background: #c82333; 
+      transform: scale(1.05); 
     }
-
 
     #btnExportar {
       background: #ffc107;
       color: #000;
     }
 
-
     #btnExportar:hover {
       background: #e0a800;
       transform: scale(1.05);
     }
 
-
-    ul {
-      list-style: none;
-      margin-top: 20px;
-      padding: 0;
+    ul { 
+      list-style: none; 
+      margin-top: 20px; 
+      padding: 0; 
     }
-
 
     li {
       background: rgba(255, 255, 255, 0.2);
-      padding: 12px;
+      padding: 12px; 
       border-radius: 10px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
+      margin-bottom: 10px; 
+      display: flex; 
+      justify-content: space-between; 
       align-items: center;
       animation: slideIn 0.4s ease;
     }
-
 
     .informacion {
       display: flex;
@@ -290,72 +255,66 @@
       gap: 4px;
     }
 
-
     .task-buttons {
       display: flex;
       gap: 6px;
     }
 
-
-    li.completada .task-text {
-      text-decoration: line-through;
-      color: #ddd;
+    li.completada .task-text { 
+      text-decoration: line-through; 
+      color: #ddd; 
     }
 
-
-    .informacion small {
-      font-size: 13px;
+    .informacion small { 
+      font-size: 13px; 
       color: #f0f0f0;
       margin-left: 2px;
     }
     .expired { color: #ffcccc; }
     .near { color: #ffeb99; }
 
-
-    button.eliminar {
-      background: #ff4b5c;
-      color: white;
-      padding: 6px 12px;
+    button.eliminar { 
+      background: #ff4b5c; 
+      color: white; 
+      padding: 6px 12px; 
     }
-    button.eliminar:hover {
-      background: #c82333;
+    button.eliminar:hover { 
+      background: #c82333; 
     }
-    button.alternar {
-      background: #28a745;
-      color: white;
-      padding: 6px 12px;
+    button.alternar { 
+      background: #28a745; 
+      color: white; 
+      padding: 6px 12px; 
     }
-    button.alternar:hover {
-      background: #1e7e34;
+    button.alternar:hover { 
+      background: #1e7e34; 
     }
-    button.edit {
-      background: #ffc107;
-      color: black;
-      padding: 6px 12px;
+    button.edit { 
+      background: #ffc107; 
+      color: black; 
+      padding: 6px 12px; 
     }
-    button.edit:hover {
-      background: #e0a800;
+    button.edit:hover { 
+      background: #e0a800; 
     }
-
 
     .mensaje {
-      position: fixed;
-      top: 10%;
-      left: 50%;
+      position: fixed; 
+      top: 10%; 
+      left: 50%; 
       transform: translateX(-50%);
-      padding: 15px 30px;
+      padding: 15px 30px; 
       border-radius: 10px;
-      font-weight: bold;
-      font-size: 18px;
+      font-weight: bold; 
+      font-size: 18px; 
       opacity: 0.95;
-      z-index: 1000;
+      z-index: 1000; 
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       animation: fadeinout 3s forwards;
     }
     .exito { background-color: #28a745; color: white; }
     .error { background-color: #dc3545; color: white; }
     .advertencia { background-color: #ffc107; color: #000; }
-
 
     /* Estilos del Modal */
     .modal {
@@ -372,7 +331,6 @@
       animation: fadeIn 0.3s ease;
     }
 
-
     .modal-content {
       background: linear-gradient(135deg, #667eea, #764ba2);
       padding: 0;
@@ -385,7 +343,6 @@
       overflow-y: auto;
     }
 
-
     .modal-header {
       display: flex;
       justify-content: space-between;
@@ -396,13 +353,11 @@
       border-radius: 16px 16px 0 0;
     }
 
-
     .modal-header h2 {
       margin: 0;
       color: white;
       font-size: 24px;
     }
-
 
     .close-modal {
       color: white;
@@ -413,18 +368,15 @@
       line-height: 1;
     }
 
-
     .close-modal:hover {
       color: #ff4b5c;
       transform: rotate(90deg);
     }
 
-
     .modal-body {
       padding: 30px;
       color: white;
     }
-
 
     .config-section {
       background: rgba(255, 255, 255, 0.1);
@@ -433,13 +385,11 @@
       backdrop-filter: blur(10px);
     }
 
-
     .config-section h3 {
       margin: 0 0 15px 0;
       font-size: 18px;
       color: white;
     }
-
 
     .btn-danger {
       width: 100%;
@@ -454,12 +404,10 @@
       color: white;
     }
 
-
     .btn-danger:hover {
       background: #a71d2a;
       transform: scale(1.05);
     }
-
 
     /* Estilos para lista de usuarios */
     .user-card {
@@ -474,13 +422,11 @@
       border: 2px solid transparent;
     }
 
-
     .user-card:hover {
       background: rgba(255, 255, 255, 0.25);
       border-color: rgba(255, 255, 255, 0.3);
       transform: translateX(5px);
     }
-
 
     .user-avatar {
       width: 50px;
@@ -496,11 +442,9 @@
       flex-shrink: 0;
     }
 
-
     .user-details {
       flex: 1;
     }
-
 
     .user-details h4 {
       margin: 0 0 5px 0;
@@ -508,13 +452,11 @@
       color: white;
     }
 
-
     .user-details p {
       margin: 0;
       font-size: 13px;
       color: #e0e0e0;
     }
-
 
     .user-badge {
       background: rgba(0, 198, 255, 0.3);
@@ -525,19 +467,16 @@
       color: #00c6ff;
     }
 
-
     .no-users {
       text-align: center;
       padding: 40px 20px;
       color: #ddd;
     }
 
-
     .no-users-icon {
       font-size: 60px;
       margin-bottom: 15px;
     }
-
 
     @keyframes fadeinout {
       0% { opacity: 0; transform: translate(-50%, -20px); }
@@ -545,12 +484,10 @@
       100% { opacity: 0; transform: translate(-50%, -20px); }
     }
 
-
     @keyframes slideIn {
       from { transform: translateX(-50px); opacity: 0; }
       to { transform: translateX(0); opacity: 1; }
     }
-
 
     @keyframes fadeIn {
       from { opacity: 0; transform: scale(0.95); }
@@ -574,7 +511,6 @@
     </div>
   </div>
 
-
   <!-- Pantalla de Registro -->
   <div class="contenedor" id="registroContainer" style="display:none;">
     <h1>Crear Cuenta Nueva</h1>
@@ -589,7 +525,6 @@
     </div>
   </div>
 
-
   <!-- Pantalla de Tareas -->
   <div class="contenedor" id="tareasContainer" style="display:none;">
     <div class="user-header">
@@ -602,7 +537,6 @@
         <button id="btnLogout">Cerrar Sesión</button>
       </div>
     </div>
-
 
     <h1>Lista de Tareas</h1>
     <div>
@@ -627,7 +561,6 @@
     <button id="btnEliminarTodas">Eliminar todas</button>
     <button id="btnExportar">Exportar tareas</button>
   </div>
-
 
   <!-- Modal de Configuración de Cuenta -->
   <div id="modalConfiguracion" class="modal" style="display:none;">
@@ -660,7 +593,6 @@
       </div>
     </div>
   </div>
-
 
   <!-- Modal de Confirmación de Eliminación -->
   <div id="modalConfirmacion" class="modal" style="display:none;">
@@ -695,7 +627,6 @@
     </div>
   </div>
 
-
   <!-- Modal de Usuarios Registrados -->
   <div id="modalUsuarios" class="modal" style="display:none;">
     <div class="modal-content" style="max-width: 600px;">
@@ -711,7 +642,6 @@
     </div>
   </div>
 
-
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       let usuarioActivo = null;
@@ -719,23 +649,19 @@
       const registroContainer = document.getElementById("registroContainer");
       const tareasContainer = document.getElementById("tareasContainer");
 
-
       // Navegación entre pantallas
       document.getElementById("irARegistro").addEventListener("click", () => {
         loginContainer.style.display = "none";
         registroContainer.style.display = "block";
       });
 
-
       document.getElementById("volverLogin").addEventListener("click", () => {
         registroContainer.style.display = "none";
         loginContainer.style.display = "block";
       });
 
-
       // Funciones de API
       const API_URL = "http://127.0.0.1:5000";
-
 
       async function loginAPI(email, password) {
         const res = await fetch(`${API_URL}/login`, {
@@ -748,7 +674,6 @@
         return data.usuario;
       }
 
-
       async function registrarAPI(usuario, email, password) {
         const res = await fetch(`${API_URL}/usuarios`, {
           method: "POST",
@@ -759,7 +684,6 @@
         if (!res.ok) throw { status: res.status, body: data };
         return data;
       }
-
 
       async function cargarTareasDesdeAPI(usuarioId) {
         try {
@@ -778,7 +702,6 @@
         }
       }
 
-
       const cargarSesion = () => {
         const sesion = JSON.parse(sessionStorage.getItem("usuarioActivo"));
         if (sesion) {
@@ -787,11 +710,9 @@
         }
       };
 
-
       const guardarSesion = () => {
         sessionStorage.setItem("usuarioActivo", JSON.stringify(usuarioActivo));
       };
-
 
       const cerrarSesion = () => {
         usuarioActivo = null;
@@ -802,7 +723,6 @@
         mostrarMensaje("Sesión cerrada", "exito");
       };
 
-
       const mostrarPantallaTareas = () => {
         document.getElementById("nombreUsuario").textContent = usuarioActivo.usuario;
         document.getElementById("emailUsuario").textContent = usuarioActivo.email;
@@ -810,20 +730,16 @@
         registroContainer.style.display = "none";
         tareasContainer.style.display = "block";
       };
-
-
       // Login
       document.getElementById("btnLogin").addEventListener("click", async () => {
         try {
           const email = document.getElementById("loginEmail").value.trim();
           const password = document.getElementById("loginPassword").value.trim();
 
-
           if (!email || !password) {
             mostrarMensaje("Completa todos los campos", "error");
             return;
           }
-
 
           const u = await loginAPI(email, password);
           usuarioActivo = u;
@@ -840,7 +756,6 @@
         }
       });
 
-
       // Registro
       document.getElementById("btnRegistro").addEventListener("click", async () => {
         try {
@@ -848,20 +763,18 @@
           const email = document.getElementById("registroEmail").value.trim();
           const password = document.getElementById("registroPassword").value.trim();
 
-
           if (!usuario || !email || !password) {
             mostrarMensaje("Completa todos los campos", "error");
             return;
           }
 
-
           const res = await registrarAPI(usuario, email, password);
           mostrarMensaje(res.message || "Usuario registrado exitosamente", "exito");
-         
+          
           document.getElementById("registroUsuario").value = "";
           document.getElementById("registroEmail").value = "";
           document.getElementById("registroPassword").value = "";
-         
+          
           setTimeout(() => {
             registroContainer.style.display = "none";
             loginContainer.style.display = "block";
@@ -873,15 +786,12 @@
         }
       });
 
-
       document.getElementById("btnLogout").addEventListener("click", cerrarSesion);
-
 
       // === SISTEMA DE CONFIGURACIÓN DE CUENTA ===
       const modalConfiguracion = document.getElementById("modalConfiguracion");
       const btnConfiguracion = document.getElementById("btnConfiguracion");
       const closeModal = document.getElementById("closeModal");
-
 
       btnConfiguracion.addEventListener("click", () => {
         document.getElementById("editUsuario").value = usuarioActivo.usuario;
@@ -890,11 +800,9 @@
         modalConfiguracion.style.display = "flex";
       });
 
-
       closeModal.addEventListener("click", () => {
         modalConfiguracion.style.display = "none";
       });
-
 
       window.addEventListener("click", (e) => {
         if (e.target === modalConfiguracion) {
@@ -902,30 +810,25 @@
         }
       });
 
-
       document.getElementById("btnGuardarCambios").addEventListener("click", async () => {
         try {
           const nuevoUsuario = document.getElementById("editUsuario").value.trim();
           const nuevoEmail = document.getElementById("editEmail").value.trim();
           const nuevaPassword = document.getElementById("editPassword").value.trim();
 
-
           if (!nuevoUsuario || !nuevoEmail) {
             mostrarMensaje("El nombre de usuario y email son obligatorios", "error");
             return;
           }
-
 
           const datosActualizacion = {
             usuario: nuevoUsuario,
             email: nuevoEmail
           };
 
-
           if (nuevaPassword) {
             datosActualizacion.password = nuevaPassword;
           }
-
 
           const res = await fetch(`${API_URL}/usuarios/${usuarioActivo.id}`, {
             method: "PUT",
@@ -933,13 +836,11 @@
             body: JSON.stringify(datosActualizacion)
           });
 
-
           const data = await res.json();
-         
+          
           if (!res.ok || !data.success) {
             throw new Error(data.message || "Error al actualizar");
           }
-
 
           usuarioActivo.usuario = data.usuario.usuario;
           usuarioActivo.email = data.usuario.email;
@@ -947,17 +848,13 @@
             usuarioActivo.password = data.usuario.password;
           }
 
-
           guardarSesion();
-
 
           document.getElementById("nombreUsuario").textContent = usuarioActivo.usuario;
           document.getElementById("emailUsuario").textContent = usuarioActivo.email;
 
-
           mostrarMensaje("Cuenta actualizada exitosamente", "exito");
           modalConfiguracion.style.display = "none";
-
 
         } catch (err) {
           console.error("Error al actualizar cuenta:", err);
@@ -965,12 +862,10 @@
         }
       });
 
-
       document.getElementById("btnEliminarCuenta").addEventListener("click", async () => {
         // Mostrar modal de confirmación elegante
         document.getElementById("modalConfirmacion").style.display = "flex";
       });
-
 
       // === MODAL DE CONFIRMACIÓN DE ELIMINACIÓN ===
       const modalConfirmacion = document.getElementById("modalConfirmacion");
@@ -978,17 +873,14 @@
       const btnCancelarEliminacion = document.getElementById("btnCancelarEliminacion");
       const btnConfirmarEliminacion = document.getElementById("btnConfirmarEliminacion");
 
-
       closeConfirmacion.addEventListener("click", () => {
         modalConfirmacion.style.display = "none";
       });
-
 
       btnCancelarEliminacion.addEventListener("click", () => {
         modalConfirmacion.style.display = "none";
         mostrarMensaje("Eliminación cancelada", "advertencia");
       });
-
 
       btnConfirmarEliminacion.addEventListener("click", async () => {
         try {
@@ -997,32 +889,27 @@
             method: "DELETE"
           });
 
-
           // Eliminar la cuenta
           const res = await fetch(`${API_URL}/usuarios/${usuarioActivo.id}`, {
             method: "DELETE"
           });
 
-
           const data = await res.json();
-
 
           if (!res.ok || !data.success) {
             throw new Error(data.message || "Error al eliminar cuenta");
           }
 
-
           mostrarMensaje("Cuenta eliminada exitosamente", "exito");
-         
+          
           // Cerrar todos los modales
           modalConfirmacion.style.display = "none";
           modalConfiguracion.style.display = "none";
-         
+          
           // Cerrar sesión después de 2 segundos
           setTimeout(() => {
             cerrarSesion();
           }, 2000);
-
 
         } catch (err) {
           console.error("Error al eliminar cuenta:", err);
@@ -1031,7 +918,6 @@
         }
       });
 
-
       // Cerrar modal de confirmación al hacer clic fuera
       window.addEventListener("click", (e) => {
         if (e.target === modalConfirmacion) {
@@ -1039,26 +925,22 @@
         }
       });
 
-
       // === MODAL DE USUARIOS REGISTRADOS ===
       const modalUsuarios = document.getElementById("modalUsuarios");
       const btnVerUsuarios = document.getElementById("btnVerUsuarios");
       const closeUsuarios = document.getElementById("closeUsuarios");
-
 
       btnVerUsuarios.addEventListener("click", async () => {
         try {
           const res = await fetch(`${API_URL}/usuarios`);
           const data = await res.json();
 
-
           if (!res.ok || !data.success) {
             throw new Error("Error al cargar usuarios");
           }
 
-
           const container = document.getElementById("listaUsuariosContainer");
-         
+          
           if (data.usuarios.length === 0) {
             container.innerHTML = `
               <div class="no-users">
@@ -1070,7 +952,7 @@
             container.innerHTML = data.usuarios.map(u => {
               const inicial = u.usuario.charAt(0).toUpperCase();
               const esTuCuenta = u.id === usuarioActivo.id;
-             
+              
               return `
                 <div class="user-card">
                   <div class="user-avatar">${inicial}</div>
@@ -1083,9 +965,7 @@
             }).join('');
           }
 
-
           modalUsuarios.style.display = "flex";
-
 
         } catch (err) {
           console.error("Error al cargar usuarios:", err);
@@ -1093,18 +973,15 @@
         }
       });
 
-
       closeUsuarios.addEventListener("click", () => {
         modalUsuarios.style.display = "none";
       });
-
 
       window.addEventListener("click", (e) => {
         if (e.target === modalUsuarios) {
           modalUsuarios.style.display = "none";
         }
       });
-
 
       // Sistema de tareas
       const elementoEntradaTarea = document.getElementById("entradaTarea");
@@ -1118,7 +995,6 @@
       const CLAVE_ALMACENAMIENTO = "tareas";
       const DURACION_MENSAJE = 3000;
 
-
       const mostrarMensaje = (textoMensaje, tipoMensaje) => {
         const contenedorMensaje = document.createElement("div");
         contenedorMensaje.textContent = textoMensaje;
@@ -1126,7 +1002,6 @@
         document.body.appendChild(contenedorMensaje);
         setTimeout(() => contenedorMensaje.remove(), DURACION_MENSAJE);
       };
-
 
       const ordenarTareas = (tareas) => {
         const prioridadOrden = { alta: 1, media: 2, baja: 3 };
@@ -1143,7 +1018,6 @@
         });
       };
 
-
       const obtenerTareasDesdeDOM = () => {
         return Array.from(listaElementosTarea.children).map(elementoLista => ({
           texto: elementoLista.querySelector(".task-text").textContent,
@@ -1153,13 +1027,11 @@
         }));
       };
 
-
       const guardarTareas = () => {
         let tareas = obtenerTareasDesdeDOM();
         tareas = ordenarTareas(tareas);
         localStorage.setItem(CLAVE_ALMACENAMIENTO, JSON.stringify(tareas));
       };
-
 
       const exportarTareas = () => {
         try {
@@ -1181,7 +1053,6 @@
         }
       };
 
-
       const cargarTareas = () => {
         let tareas = JSON.parse(localStorage.getItem(CLAVE_ALMACENAMIENTO)) || [];
         tareas = ordenarTareas(tareas);
@@ -1189,14 +1060,12 @@
         tareas.forEach(anadirTareaAlDOM);
       };
 
-
       const obtenerClaseFecha = (fechaTarea) => {
         const fechaHoy = new Date().toISOString().split("T")[0];
         if (fechaTarea < fechaHoy) return "expired";
         if (fechaTarea === fechaHoy) return "near";
         return "";
       };
-
 
       const crearElementoFecha = (fechaTarea) => {
         const elementoFechaLimite = document.createElement("small");
@@ -1208,17 +1077,14 @@
         return elementoFechaLimite;
       };
 
-
       const crearSeccionInformacion = (tarea) => {
         const contenedorInformacion = document.createElement("div");
         contenedorInformacion.classList.add("informacion");
-
 
         const elementoTexto = document.createElement("span");
         elementoTexto.textContent = tarea.texto;
         elementoTexto.classList.add("task-text");
         contenedorInformacion.appendChild(elementoTexto);
-
 
         if (tarea.fecha) {
           const elementoFecha = crearElementoFecha(tarea.fecha);
@@ -1229,27 +1095,23 @@
           contenedorInformacion.appendChild(elementoFecha);
         }
 
-
         const elementoPrioridad = document.createElement("small");
         elementoPrioridad.textContent = `Prioridad: ${tarea.prioridad}`;
         contenedorInformacion.appendChild(elementoPrioridad);
 
-
         return contenedorInformacion;
       };
-
 
       const actualizarBotonCompletar = (boton, elementoLista) => {
         const estaCompletada = elementoLista.classList.contains("completada");
         boton.textContent = estaCompletada ? "Desmarcar" : "Completar";
       };
 
-
       const alternarEstadoCompletado = async (elementoLista, botonAlternar) => {
         const tareaId = elementoLista.dataset.tareaId;
         elementoLista.classList.toggle("completada");
         actualizarBotonCompletar(botonAlternar, elementoLista);
-       
+        
         if (tareaId) {
           try {
             const completada = elementoLista.classList.contains("completada");
@@ -1257,21 +1119,20 @@
             const fecha = elementoLista.dataset.date || null;
             const prioridad = elementoLista.dataset.prioridad || "media";
 
-
             const res = await fetch(`${API_URL}/tareas/${tareaId}`, {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                texto,
-                completada,
-                fecha,
+              body: JSON.stringify({ 
+                texto, 
+                completada, 
+                fecha, 
                 prioridad,
-                usuario_id: usuarioActivo.id
+                usuario_id: usuarioActivo.id 
               })
             });
-           
+            
             if (!res.ok) throw new Error("Error al actualizar");
-           
+            
             await cargarTareasDesdeAPI(usuarioActivo.id);
           } catch (err) {
             mostrarMensaje("Error al actualizar tarea en el servidor", "error");
@@ -1281,60 +1142,188 @@
           guardarTareas();
         }
       };
-
-
+      // ========== FUNCIÓN EDITAR TAREA MEJORADA (CON FECHA, PRIORIDAD Y TEXTO) ==========
       const editarTarea = async (elementoTexto, elementoLista) => {
         const textoActual = elementoTexto.textContent;
-        const textoNuevo = prompt("Editar tarea:", textoActual);
-        if (textoNuevo && textoNuevo.trim()) {
-          elementoTexto.textContent = textoNuevo.trim();
-         
+        const fechaActual = elementoLista.dataset.date || "";
+        const prioridadActual = elementoLista.dataset.prioridad || "media";
+        
+        // Crear un modal personalizado para editar
+        const modalHTML = `
+          <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); 
+               display: flex; justify-content: center; align-items: center; z-index: 3000;" id="modalEditarTarea">
+            <div style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 30px; border-radius: 16px; 
+                 width: 90%; max-width: 500px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);">
+              <h2 style="color: white; margin-bottom: 20px; text-align: center;">✏️ Editar Tarea</h2>
+              <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div>
+                  <label style="color: white; display: block; margin-bottom: 5px; font-size: 14px;">Texto de la tarea:</label>
+                  <input type="text" id="editTextoInput" value="${textoActual}" 
+                         style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 15px;">
+                </div>
+                <div>
+                  <label style="color: white; display: block; margin-bottom: 5px; font-size: 14px;">Fecha límite:</label>
+                  <input type="date" id="editFechaInput" value="${fechaActual}" 
+                         style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 15px;">
+                </div>
+                <div>
+                  <label style="color: white; display: block; margin-bottom: 5px; font-size: 14px;">Prioridad:</label>
+                  <select id="editPrioridadInput" 
+                          style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 15px;">
+                    <option value="alta" ${prioridadActual === 'alta' ? 'selected' : ''}>Alta</option>
+                    <option value="media" ${prioridadActual === 'media' ? 'selected' : ''}>Media</option>
+                    <option value="baja" ${prioridadActual === 'baja' ? 'selected' : ''}>Baja</option>
+                  </select>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                  <button id="btnCancelarEdicion" 
+                          style="flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; 
+                                 font-size: 15px; font-weight: bold; background: rgba(255,255,255,0.2); color: white;
+                                 transition: all 0.3s ease;">
+                    ❌ Cancelar
+                  </button>
+                  <button id="btnGuardarEdicion" 
+                          style="flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; 
+                                 font-size: 15px; font-weight: bold; background: #00c6ff; color: white;
+                                 transition: all 0.3s ease;">
+                    ✓ Guardar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        // Insertar el modal en el body
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        
+        const modal = document.getElementById('modalEditarTarea');
+        const btnCancelar = document.getElementById('btnCancelarEdicion');
+        const btnGuardar = document.getElementById('btnGuardarEdicion');
+        const inputTexto = document.getElementById('editTextoInput');
+        const inputFecha = document.getElementById('editFechaInput');
+        const inputPrioridad = document.getElementById('editPrioridadInput');
+        
+        // Agregar efectos hover
+        btnCancelar.addEventListener('mouseenter', () => {
+          btnCancelar.style.background = 'rgba(255,255,255,0.3)';
+          btnCancelar.style.transform = 'scale(1.02)';
+        });
+        btnCancelar.addEventListener('mouseleave', () => {
+          btnCancelar.style.background = 'rgba(255,255,255,0.2)';
+          btnCancelar.style.transform = 'scale(1)';
+        });
+        
+        btnGuardar.addEventListener('mouseenter', () => {
+          btnGuardar.style.background = '#0096c7';
+          btnGuardar.style.transform = 'scale(1.02)';
+        });
+        btnGuardar.addEventListener('mouseleave', () => {
+          btnGuardar.style.background = '#00c6ff';
+          btnGuardar.style.transform = 'scale(1)';
+        });
+        
+        // Enfocar el input de texto
+        inputTexto.focus();
+        inputTexto.select();
+        
+        // Función para cerrar el modal
+        const cerrarModal = () => {
+          modal.remove();
+        };
+        
+        // Cancelar edición
+        btnCancelar.addEventListener('click', cerrarModal);
+        
+        // Cerrar al hacer clic fuera del modal
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            cerrarModal();
+          }
+        });
+        
+        // Cerrar con tecla ESC
+        const handleEscape = (e) => {
+          if (e.key === 'Escape') {
+            cerrarModal();
+            document.removeEventListener('keydown', handleEscape);
+          }
+        };
+        document.addEventListener('keydown', handleEscape);
+        
+        // Guardar con Enter en el input de texto
+        inputTexto.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            btnGuardar.click();
+          }
+        });
+        
+        // Guardar cambios
+        btnGuardar.addEventListener('click', async () => {
+          const textoNuevo = inputTexto.value.trim();
+          const fechaNueva = inputFecha.value;
+          const prioridadNueva = inputPrioridad.value;
+          
+          if (!textoNuevo) {
+            mostrarMensaje("El texto de la tarea no puede estar vacío", "error");
+            return;
+          }
+          
+          // Actualizar el DOM
+          elementoTexto.textContent = textoNuevo;
+          elementoLista.dataset.date = fechaNueva;
+          elementoLista.dataset.prioridad = prioridadNueva;
+          
           const tareaId = elementoLista.dataset.tareaId;
+          
           if (tareaId) {
+            // Actualizar en el servidor
             try {
               const completada = elementoLista.classList.contains("completada");
-              const fecha = elementoLista.dataset.date || null;
-              const prioridad = elementoLista.dataset.prioridad || "media";
-
 
               const res = await fetch(`${API_URL}/tareas/${tareaId}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  texto: textoNuevo.trim(),
-                  completada,
-                  fecha,
-                  prioridad,
-                  usuario_id: usuarioActivo.id
+                body: JSON.stringify({ 
+                  texto: textoNuevo, 
+                  completada, 
+                  fecha: fechaNueva || null, 
+                  prioridad: prioridadNueva,
+                  usuario_id: usuarioActivo.id 
                 })
               });
-             
+              
               if (!res.ok) throw new Error("Error al actualizar");
-             
+              
               await cargarTareasDesdeAPI(usuarioActivo.id);
-              mostrarMensaje("Tarea actualizada", "exito");
+              mostrarMensaje("Tarea actualizada exitosamente", "exito");
             } catch (err) {
               mostrarMensaje("Error al actualizar tarea en el servidor", "error");
               console.error(err);
             }
           } else {
+            // Guardar localmente
             guardarTareas();
+            cargarTareas();
+            mostrarMensaje("Tarea actualizada", "exito");
           }
-        }
+          
+          cerrarModal();
+          document.removeEventListener('keydown', handleEscape);
+        });
       };
-
 
       const eliminarTarea = async (elementoLista) => {
         const tareaId = elementoLista.dataset.tareaId;
-       
+        
         if (tareaId) {
           try {
             const res = await fetch(`${API_URL}/tareas/${tareaId}`, {
               method: "DELETE"
             });
-           
+            
             if (!res.ok) throw new Error("Error al eliminar");
-           
+            
             await cargarTareasDesdeAPI(usuarioActivo.id);
             mostrarMensaje("Tarea eliminada", "exito");
           } catch (err) {
@@ -1348,38 +1337,31 @@
         }
       };
 
-
       const crearBotonesAccion = (tarea, elementoLista, elementoTexto) => {
         const contenedorBotones = document.createElement("div");
         contenedorBotones.classList.add("task-buttons");
-
 
         const botonAlternar = document.createElement("button");
         botonAlternar.className = "alternar";
         actualizarBotonCompletar(botonAlternar, elementoLista);
         botonAlternar.addEventListener("click", () => alternarEstadoCompletado(elementoLista, botonAlternar));
 
-
         const botonEditar = document.createElement("button");
         botonEditar.textContent = "Editar";
         botonEditar.className = "edit";
         botonEditar.addEventListener("click", () => editarTarea(elementoTexto, elementoLista));
-
 
         const botonEliminar = document.createElement("button");
         botonEliminar.textContent = "Eliminar";
         botonEliminar.className = "eliminar";
         botonEliminar.addEventListener("click", () => eliminarTarea(elementoLista));
 
-
         contenedorBotones.appendChild(botonAlternar);
         contenedorBotones.appendChild(botonEditar);
         contenedorBotones.appendChild(botonEliminar);
 
-
         return contenedorBotones;
       };
-
 
       const anadirTareaAlDOM = (datosTarea) => {
         const elementoLista = document.createElement("li");
@@ -1390,17 +1372,14 @@
           elementoLista.dataset.tareaId = datosTarea.id;
         }
 
-
         const seccionInformacion = crearSeccionInformacion(datosTarea);
         const elementoTexto = seccionInformacion.querySelector(".task-text");
         const seccionBotones = crearBotonesAccion(datosTarea, elementoLista, elementoTexto);
-
 
         elementoLista.appendChild(seccionInformacion);
         elementoLista.appendChild(seccionBotones);
         listaElementosTarea.appendChild(elementoLista);
       };
-
 
       const validarTextoTarea = (texto) => {
         if (!texto) {
@@ -1410,7 +1389,6 @@
         return true;
       };
 
-
       const validarLimiteTareas = () => {
         if (listaElementosTarea.children.length >= MAXIMO_TAREAS) {
           mostrarMensaje(`Máximo ${MAXIMO_TAREAS} tareas`, "advertencia");
@@ -1419,10 +1397,9 @@
         return true;
       };
 
-
       const validarTareaUnica = (textoNuevo) => {
         const textosExistentes = Array.from(listaElementosTarea.querySelectorAll(".task-text"));
-        const existe = textosExistentes.some(elemento =>
+        const existe = textosExistentes.some(elemento => 
           elemento.textContent.toLowerCase() === textoNuevo.toLowerCase()
         );
         if (existe) {
@@ -1432,33 +1409,28 @@
         return true;
       };
 
-
       const limpiarCamposEntrada = () => {
         elementoEntradaTarea.value = "";
         elementoFechaTarea.value = "";
         elementoPrioridad.value = "media";
       };
 
-
       const procesarNuevaTarea = async () => {
         const textoTarea = elementoEntradaTarea.value.trim();
         const fechaTarea = elementoFechaTarea.value;
         const prioridad = elementoPrioridad.value;
 
-
         if (!validarTextoTarea(textoTarea)) return;
         if (!validarLimiteTareas()) return;
         if (!validarTareaUnica(textoTarea)) return;
 
-
-        const nuevaTarea = {
-          texto: textoTarea,
-          completada: false,
+        const nuevaTarea = { 
+          texto: textoTarea, 
+          completada: false, 
           fecha: fechaTarea,
           prioridad: prioridad,
           usuario_id: usuarioActivo.id
         };
-
 
         try {
           const res = await fetch(`${API_URL}/tareas`, {
@@ -1468,7 +1440,6 @@
           });
           const data = await res.json();
           if (!res.ok || !data.success) throw data;
-
 
           anadirTareaAlDOM(data.tarea);
           limpiarCamposEntrada();
@@ -1481,7 +1452,6 @@
         }
       };
 
-
       const debeElementoMostrarseConFiltro = (elementoLista, valorFiltro) => {
         const estaCompletada = elementoLista.classList.contains("completada");
         switch (valorFiltro) {
@@ -1492,14 +1462,12 @@
         }
       };
 
-
       const aplicarFiltroTareas = () => {
         const valorFiltro = selectorFiltro.value;
         Array.from(listaElementosTarea.children).forEach(elementoLista => {
           elementoLista.style.display = debeElementoMostrarseConFiltro(elementoLista, valorFiltro) ? "flex" : "none";
         });
       };
-
 
       const eliminarTodasLasTareas = async () => {
         if (!listaElementosTarea.children.length) {
@@ -1511,9 +1479,9 @@
             const res = await fetch(`${API_URL}/tareas/usuario/${usuarioActivo.id}`, {
               method: "DELETE"
             });
-           
+            
             if (!res.ok) throw new Error("Error al eliminar");
-           
+            
             await cargarTareasDesdeAPI(usuarioActivo.id);
             localStorage.removeItem(CLAVE_ALMACENAMIENTO);
             mostrarMensaje("Todas las tareas eliminadas", "exito");
@@ -1524,11 +1492,10 @@
         }
       };
 
-
       const configurarEventos = () => {
         botonAnadirTarea.addEventListener("click", procesarNuevaTarea);
-        elementoEntradaTarea.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") procesarNuevaTarea();
+        elementoEntradaTarea.addEventListener("keydown", (e) => { 
+          if (e.key === "Enter") procesarNuevaTarea(); 
         });
         selectorFiltro.addEventListener("change", aplicarFiltroTareas);
         botonEliminarTodas.addEventListener("click", eliminarTodasLasTareas);
@@ -1538,13 +1505,11 @@
         }
       };
 
-
       const inicializarAplicacion = () => {
         cargarSesion();
         cargarTareas();
         configurarEventos();
       };
-
 
       inicializarAplicacion();
     });
