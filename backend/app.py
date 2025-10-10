@@ -21,6 +21,37 @@ def guardar_json(archivo, datos):
     with open(archivo, "w", encoding="utf-8") as f:
         json.dump(datos, f, indent=4, ensure_ascii=False)
 
+# === FUNCIÓN PARA OBTENER EL PRÓXIMO ID DISPONIBLE ===
+def obtener_proximo_id_usuario(usuarios):
+    if not usuarios:
+        return "U001"
+    numeros_ids = []
+    for id_usuario in usuarios.keys():
+        try:
+            numero = int(id_usuario[1:])
+            numeros_ids.append(numero)
+        except:
+            continue
+    if not numeros_ids:
+        return "U001"
+    proximo_numero = max(numeros_ids) + 1
+    return f"U{proximo_numero:03d}"
+
+def obtener_proximo_id_tarea(tareas):
+    if not tareas:
+        return "T001"
+    numeros_ids = []
+    for id_tarea in tareas.keys():
+        try:
+            numero = int(id_tarea[1:])
+            numeros_ids.append(numero)
+        except:
+            continue
+    if not numeros_ids:
+        return "T001"
+    proximo_numero = max(numeros_ids) + 1
+    return f"T{proximo_numero:03d}"
+
 # === INICIALIZAR "BASE DE DATOS" ===
 usuarios = leer_json(USUARIOS_FILE)
 tareas = leer_json(TAREAS_FILE)
@@ -44,7 +75,7 @@ def crear_usuario():
     if not datos or "usuario" not in datos or "email" not in datos or "password" not in datos:
         return jsonify({"success": False, "message": "Faltan datos"}), 400
 
-    nuevo_id = f"U{len(usuarios)+1:03d}"
+    nuevo_id = obtener_proximo_id_usuario(usuarios)
     usuario = {
         "id": nuevo_id,
         "usuario": datos["usuario"],
@@ -146,8 +177,7 @@ def crear_tarea():
     if datos["usuario_id"] not in usuarios:
         return jsonify({"success": False, "message": "Usuario no encontrado"}), 404
     
-    id_tarea = f"T{contador_tareas:03d}"
-    contador_tareas += 1
+    id_tarea = obtener_proximo_id_tarea(tareas)
     
     tarea = {
         "id": id_tarea,
