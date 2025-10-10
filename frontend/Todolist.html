@@ -136,6 +136,28 @@
       font-size: 14px;
     }
 
+    .user-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    #btnConfiguracion {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+
+    #btnConfiguracion:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+
     #btnLogout {
       background: #ff4b5c;
       color: white;
@@ -294,6 +316,99 @@
     .error { background-color: #dc3545; color: white; }
     .advertencia { background-color: #ffc107; color: #000; }
 
+    /* Estilos del Modal */
+    .modal {
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      padding: 0;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.4s ease;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 30px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px 16px 0 0;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      color: white;
+      font-size: 24px;
+    }
+
+    .close-modal {
+      color: white;
+      font-size: 32px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      line-height: 1;
+    }
+
+    .close-modal:hover {
+      color: #ff4b5c;
+      transform: rotate(90deg);
+    }
+
+    .modal-body {
+      padding: 30px;
+      color: white;
+    }
+
+    .config-section {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    .config-section h3 {
+      margin: 0 0 15px 0;
+      font-size: 18px;
+      color: white;
+    }
+
+    .btn-danger {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #a71d2a;
+      transform: scale(1.05);
+    }
+
     @keyframes fadeinout {
       0% { opacity: 0; transform: translate(-50%, -20px); }
       10%, 90% { opacity: 1; transform: translate(-50%, 0); }
@@ -304,6 +419,7 @@
       from { transform: translateX(-50px); opacity: 0; }
       to { transform: translateX(0); opacity: 1; }
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: scale(0.95); }
       to { opacity: 1; transform: scale(1); }
@@ -347,7 +463,10 @@
         <strong id="nombreUsuario"></strong><br>
         <small id="emailUsuario"></small>
       </div>
-      <button id="btnLogout">Cerrar Sesión</button>
+      <div class="user-actions">
+        <button id="btnConfiguracion" title="Configuración">⚙️</button>
+        <button id="btnLogout">Cerrar Sesión</button>
+      </div>
     </div>
 
     <h1>Lista de Tareas</h1>
@@ -372,6 +491,34 @@
     <ul id="listaTareas"></ul>
     <button id="btnEliminarTodas">Eliminar todas</button>
     <button id="btnExportar">Exportar tareas</button>
+  </div>
+
+  <!-- Modal de Configuración de Cuenta -->
+  <div id="modalConfiguracion" class="modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>⚙️ Configuración de Cuenta</h2>
+        <span class="close-modal" id="closeModal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="config-section">
+          <h3>📝 Editar Información</h3>
+          <div class="auth-form">
+            <input type="text" id="editUsuario" placeholder="Nuevo nombre de usuario" />
+            <input type="email" id="editEmail" placeholder="Nuevo email" />
+            <input type="password" id="editPassword" placeholder="Nueva contraseña (opcional)" />
+            <button id="btnGuardarCambios" class="btn-primary">Guardar Cambios</button>
+          </div>
+        </div>
+        <div class="config-section" style="margin-top: 30px;">
+          <h3>🗑️ Zona Peligrosa</h3>
+          <p style="font-size: 14px; color: #ffcccc; margin-bottom: 10px;">
+            Esta acción eliminará permanentemente tu cuenta y todas tus tareas.
+          </p>
+          <button id="btnEliminarCuenta" class="btn-danger">Eliminar Cuenta</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -504,12 +651,10 @@
           const res = await registrarAPI(usuario, email, password);
           mostrarMensaje(res.message || "Usuario registrado exitosamente", "exito");
           
-          // Limpiar campos
           document.getElementById("registroUsuario").value = "";
           document.getElementById("registroEmail").value = "";
           document.getElementById("registroPassword").value = "";
           
-          // Volver al login después de 2 segundos
           setTimeout(() => {
             registroContainer.style.display = "none";
             loginContainer.style.display = "block";
@@ -522,6 +667,128 @@
       });
 
       document.getElementById("btnLogout").addEventListener("click", cerrarSesion);
+
+      // === SISTEMA DE CONFIGURACIÓN DE CUENTA ===
+      const modalConfiguracion = document.getElementById("modalConfiguracion");
+      const btnConfiguracion = document.getElementById("btnConfiguracion");
+      const closeModal = document.getElementById("closeModal");
+
+      btnConfiguracion.addEventListener("click", () => {
+        document.getElementById("editUsuario").value = usuarioActivo.usuario;
+        document.getElementById("editEmail").value = usuarioActivo.email;
+        document.getElementById("editPassword").value = "";
+        modalConfiguracion.style.display = "flex";
+      });
+
+      closeModal.addEventListener("click", () => {
+        modalConfiguracion.style.display = "none";
+      });
+
+      window.addEventListener("click", (e) => {
+        if (e.target === modalConfiguracion) {
+          modalConfiguracion.style.display = "none";
+        }
+      });
+
+      document.getElementById("btnGuardarCambios").addEventListener("click", async () => {
+        try {
+          const nuevoUsuario = document.getElementById("editUsuario").value.trim();
+          const nuevoEmail = document.getElementById("editEmail").value.trim();
+          const nuevaPassword = document.getElementById("editPassword").value.trim();
+
+          if (!nuevoUsuario || !nuevoEmail) {
+            mostrarMensaje("El nombre de usuario y email son obligatorios", "error");
+            return;
+          }
+
+          const datosActualizacion = {
+            usuario: nuevoUsuario,
+            email: nuevoEmail
+          };
+
+          if (nuevaPassword) {
+            datosActualizacion.password = nuevaPassword;
+          }
+
+          const res = await fetch(`${API_URL}/usuarios/${usuarioActivo.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosActualizacion)
+          });
+
+          const data = await res.json();
+          
+          if (!res.ok || !data.success) {
+            throw new Error(data.message || "Error al actualizar");
+          }
+
+          usuarioActivo.usuario = data.usuario.usuario;
+          usuarioActivo.email = data.usuario.email;
+          if (nuevaPassword) {
+            usuarioActivo.password = data.usuario.password;
+          }
+
+          guardarSesion();
+
+          document.getElementById("nombreUsuario").textContent = usuarioActivo.usuario;
+          document.getElementById("emailUsuario").textContent = usuarioActivo.email;
+
+          mostrarMensaje("Cuenta actualizada exitosamente", "exito");
+          modalConfiguracion.style.display = "none";
+
+        } catch (err) {
+          console.error("Error al actualizar cuenta:", err);
+          mostrarMensaje("Error al actualizar la cuenta", "error");
+        }
+      });
+
+      document.getElementById("btnEliminarCuenta").addEventListener("click", async () => {
+        const confirmacion = confirm(
+          "⚠️ ADVERTENCIA ⚠️\n\n" +
+          "¿Estás seguro de que deseas eliminar tu cuenta?\n\n" +
+          "Esta acción:\n" +
+          "• Eliminará tu cuenta permanentemente\n" +
+          "• Borrará todas tus tareas\n" +
+          "• NO se puede deshacer\n\n" +
+          "Escribe 'ELIMINAR' para confirmar"
+        );
+
+        if (!confirmacion) return;
+
+        const confirmacionFinal = prompt("Escribe 'ELIMINAR' para confirmar:");
+        
+        if (confirmacionFinal !== "ELIMINAR") {
+          mostrarMensaje("Eliminación cancelada", "advertencia");
+          return;
+        }
+
+        try {
+          await fetch(`${API_URL}/tareas/usuario/${usuarioActivo.id}`, {
+            method: "DELETE"
+          });
+
+          const res = await fetch(`${API_URL}/usuarios/${usuarioActivo.id}`, {
+            method: "DELETE"
+          });
+
+          const data = await res.json();
+
+          if (!res.ok || !data.success) {
+            throw new Error(data.message || "Error al eliminar cuenta");
+          }
+
+          mostrarMensaje("Cuenta eliminada exitosamente", "exito");
+          
+          modalConfiguracion.style.display = "none";
+          setTimeout(() => {
+            cerrarSesion();
+          }, 2000);
+
+        } catch (err) {
+          console.error("Error al eliminar cuenta:", err);
+          mostrarMensaje("Error al eliminar la cuenta", "error");
+        }
+      });
 
       // Sistema de tareas
       const elementoEntradaTarea = document.getElementById("entradaTarea");
@@ -577,6 +844,7 @@
         try {
           const tareas = JSON.parse(localStorage.getItem(CLAVE_ALMACENAMIENTO));
           if (!tareas || tareas.length === 0) {
+            mostrarMensaje("No hay tareas para exportar", "advertencia");
             return;
           }
           const blob = new Blob([JSON.stringify(tareas, null, 2)], { type: "application/json" });
@@ -651,7 +919,6 @@
         elementoLista.classList.toggle("completada");
         actualizarBotonCompletar(botonAlternar, elementoLista);
         
-        // Actualizar en backend
         if (tareaId) {
           try {
             const completada = elementoLista.classList.contains("completada");
@@ -673,7 +940,6 @@
             
             if (!res.ok) throw new Error("Error al actualizar");
             
-            // Recargar desde el backend para asegurar sincronización
             await cargarTareasDesdeAPI(usuarioActivo.id);
           } catch (err) {
             mostrarMensaje("Error al actualizar tarea en el servidor", "error");
@@ -690,7 +956,6 @@
         if (textoNuevo && textoNuevo.trim()) {
           elementoTexto.textContent = textoNuevo.trim();
           
-          // Actualizar en backend
           const tareaId = elementoLista.dataset.tareaId;
           if (tareaId) {
             try {
@@ -712,7 +977,6 @@
               
               if (!res.ok) throw new Error("Error al actualizar");
               
-              // Recargar desde el backend
               await cargarTareasDesdeAPI(usuarioActivo.id);
               mostrarMensaje("Tarea actualizada", "exito");
             } catch (err) {
@@ -728,7 +992,6 @@
       const eliminarTarea = async (elementoLista) => {
         const tareaId = elementoLista.dataset.tareaId;
         
-        // Eliminar del backend
         if (tareaId) {
           try {
             const res = await fetch(`${API_URL}/tareas/${tareaId}`, {
@@ -737,7 +1000,6 @@
             
             if (!res.ok) throw new Error("Error al eliminar");
             
-            // Recargar tareas desde el backend después de eliminar
             await cargarTareasDesdeAPI(usuarioActivo.id);
             mostrarMensaje("Tarea eliminada", "exito");
           } catch (err) {
@@ -746,7 +1008,6 @@
             return;
           }
         } else {
-          // Si no tiene ID (tarea local), eliminar solo del DOM
           elementoLista.remove();
           guardarTareas();
         }
@@ -783,7 +1044,6 @@
         if (datosTarea.completada) elementoLista.classList.add("completada");
         elementoLista.dataset.date = datosTarea.fecha || "";
         elementoLista.dataset.prioridad = datosTarea.prioridad || "media";
-        // IMPORTANTE: Guardar el ID que viene del backend
         if (datosTarea.id) {
           elementoLista.dataset.tareaId = datosTarea.id;
         }
@@ -849,7 +1109,6 @@
         };
 
         try {
-          // Guardar en backend
           const res = await fetch(`${API_URL}/tareas`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -858,7 +1117,6 @@
           const data = await res.json();
           if (!res.ok || !data.success) throw data;
 
-          // Añadir al DOM
           anadirTareaAlDOM(data.tarea);
           limpiarCamposEntrada();
           guardarTareas();
@@ -893,7 +1151,6 @@
         }
         const confirmacion = confirm("¿Seguro que quieres borrar todas?");
         if (confirmacion) {
-          // Eliminar del backend
           try {
             const res = await fetch(`${API_URL}/tareas/usuario/${usuarioActivo.id}`, {
               method: "DELETE"
@@ -901,7 +1158,6 @@
             
             if (!res.ok) throw new Error("Error al eliminar");
             
-            // Recargar desde el backend
             await cargarTareasDesdeAPI(usuarioActivo.id);
             localStorage.removeItem(CLAVE_ALMACENAMIENTO);
             mostrarMensaje("Todas las tareas eliminadas", "exito");
