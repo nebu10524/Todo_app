@@ -84,7 +84,7 @@ Se implementaron endpoints para gestionar \*\*usuarios\*\* y \*\*tareas\*\*, inc
      ```bash
      Todo_app/frontend
      ```
-   - La forma más simple es hacer doble clic en **Todolist.html** para abrirlo en tu navegador.  
+   - La forma más simple es hacer doble clic en **index.html** para abrirlo en tu navegador.  
    - También puedes hacer clic derecho → *Abrir con* → y seleccionar el navegador que más te guste.
 
 ---
@@ -132,11 +132,11 @@ Todo\_app/
 
 │── frontend/
 
-│ ├── Todolist.html # Interfaz principal de la aplicación (lista de tareas + login)
+│ ├── index.html # Interfaz principal de la aplicación (lista de tareas + login)
 
 │ ├── styles.css # Estilos de la app
 
-│ └── app.js # Lógica del frontend (manejo de tareas, login simulado)
+│ └── script.js # Lógica del frontend (manejo de tareas, login simulado)
 
 │
 
