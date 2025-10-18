@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lista de Tareas con Autenticación</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- ⬇️ ÚNICO CAMBIO: Enlace al archivo CSS externo -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Pantalla de Login -->
+  <div class="contenedor" id="loginContainer">
+    <h1>Iniciar Sesión</h1>
+    <div class="auth-form">
+      <input type="email" id="loginEmail" placeholder="Email" />
+      <input type="password" id="loginPassword" placeholder="Contraseña" />
+      <div class="auth-buttons">
+        <button id="btnLogin" class="btn-primary">Iniciar Sesión</button>
+      </div>
+    </div>
+    <div class="text-center">
+      ¿No tienes cuenta? <a id="irARegistro">Regístrate aquí</a>
+    </div>
+  </div>
+
+  <!-- Pantalla de Registro -->
+  <div class="contenedor" id="registroContainer" style="display:none;">
+    <h1>Crear Cuenta Nueva</h1>
+    <div class="auth-form">
+      <input type="text" id="registroUsuario" placeholder="Nombre de Usuario" />
+      <input type="email" id="registroEmail" placeholder="Email" />
+      <input type="password" id="registroPassword" placeholder="Contraseña" />
+      <div class="auth-buttons">
+        <button id="btnRegistro" class="btn-success">Registrarse</button>
+        <button id="volverLogin" class="btn-secondary">Volver al Inicio de Sesión</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pantalla de Tareas -->
+  <div class="contenedor" id="tareasContainer" style="display:none;">
+    <!-- Encabezado del usuario -->
+    <div class="user-header">
+      <div class="user-info">
+        <strong id="nombreUsuario"></strong><br>
+        <small id="emailUsuario"></small>
+      </div>
+      <div class="user-actions">
+        <button id="btnConfiguracion" title="Configuración">⚙️</button>
+        <button id="btnLogout">Cerrar Sesión</button>
+      </div>
+    </div>
+
+    <h1>Lista de Tareas</h1>
+    
+    <!-- Formulario para agregar tareas -->
+    <div>
+      <input type="text" id="entradaTarea" placeholder="Escribe una tarea..." autofocus />
+      <input type="date" id="fechaLimite" />
+      <select id="prioridadTarea">
+        <option value="alta">Alta</option>
+        <option value="media" selected>Media</option>
+        <option value="baja">Baja</option>
+      </select>
+      <button id="btnAgregar" type="button">Añadir</button>
+    </div>
+    
+    <!-- Filtro de tareas -->
+    <div style="margin-top:15px;">
+      <label for="filtro">Filtrar:</label>
+      <select id="filtro">
+        <option value="todas">Todas</option>
+        <option value="completadas">Completadas</option>
+        <option value="pendientes">Pendientes</option>
+      </select>
+    </div>
+    
+    <!-- Lista de tareas -->
+    <ul id="listaTareas"></ul>
+    
+    <!-- Botones de acción -->
+    <button id="btnEliminarTodas">Eliminar todas</button>
+    <button id="btnExportar">Exportar tareas</button>
+  </div>
+
+  <!-- Modal de Configuración -->
+  <div id="modalConfiguracion" class="modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>⚙️ Configuración de Cuenta</h2>
+        <span class="close-modal" id="closeModal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <!-- Sección: Editar información -->
+        <div class="config-section">
+          <h3>📝 Editar Información</h3>
+          <div class="auth-form">
+            <input type="text" id="editUsuario" placeholder="Nuevo nombre de usuario" />
+            <input type="email" id="editEmail" placeholder="Nuevo email" />
+            <input type="password" id="editPassword" placeholder="Nueva contraseña (opcional)" />
+            <button id="btnGuardarCambios" class="btn-primary">Guardar Cambios</button>
+          </div>
+        </div>
+        
+        <!-- Sección: Ver usuarios -->
+        <div class="config-section" style="margin-top: 30px;">
+          <h3>👥 Ver Usuarios Registrados</h3>
+          <button id="btnVerUsuarios" class="btn-primary" style="width: 100%;">Ver Todos los Usuarios</button>
+        </div>
+        
+        <!-- Sección: Eliminar cuenta -->
+        <div class="config-section" style="margin-top: 30px;">
+          <h3>🗑️ Zona Peligrosa</h3>
+          <p style="font-size: 14px; color: #ffcccc; margin-bottom: 10px;">
+            Esta acción eliminará permanentemente tu cuenta y todas tus tareas.
+          </p>
+          <button id="btnEliminarCuenta" class="btn-danger">Eliminar Cuenta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmación para eliminar cuenta -->
+  <div id="modalConfirmacion" class="modal" style="display:none;">
+    <div class="modal-content" style="max-width: 450px;">
+      <div class="modal-header" style="background: rgba(220, 53, 69, 0.2);">
+        <h2>⚠️ Confirmar Eliminación</h2>
+        <span class="close-modal" id="closeConfirmacion">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div style="font-size: 60px; margin-bottom: 15px;">🗑️</div>
+          <h3 style="margin-bottom: 15px; color: #ffcccc;">¿Estás completamente seguro?</h3>
+          <p style="font-size: 15px; line-height: 1.6; margin-bottom: 20px;">
+            Esta acción es <strong>PERMANENTE</strong> y no se puede deshacer.<br><br>
+            Se eliminará:
+          </p>
+          <ul style="list-style: none; padding: 0; font-size: 14px; margin-bottom: 25px;">
+            <li style="margin: 8px 0;">❌ Tu cuenta permanentemente</li>
+            <li style="margin: 8px 0;">❌ Todas tus tareas</li>
+            <li style="margin: 8px 0;">❌ Toda tu información</li>
+          </ul>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button id="btnCancelarEliminacion" class="btn-secondary" style="flex: 1; background: rgba(255,255,255,0.3);">
+            ❌ Cancelar
+          </button>
+          <button id="btnConfirmarEliminacion" class="btn-danger" style="flex: 1;">
+            ✓ Sí, eliminar mi cuenta
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Usuarios Registrados -->
+  <div id="modalUsuarios" class="modal" style="display:none;">
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header">
+        <h2>👥 Usuarios Registrados</h2>
+        <span class="close-modal" id="closeUsuarios">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div id="listaUsuariosContainer" style="max-height: 400px; overflow-y: auto;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Editar Tarea -->
+  <div id="modalEditarTarea" class="modal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>✏️ Editar Tarea</h2>
+        <span class="close-modal" id="closeEditarTarea">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Texto de la tarea:</label>
+          <input type="text" id="editTextoInput" />
+        </div>
+        <div class="form-group">
+          <label>Fecha límite:</label>
+          <input type="date" id="editFechaInput" />
+        </div>
+        <div class="form-group">
+          <label>Prioridad:</label>
+          <select id="editPrioridadInput">
+            <option value="alta">Alta</option>
+            <option value="media">Media</option>
+            <option value="baja">Baja</option>
+          </select>
+        </div>
+        <div class="button-group">
+          <button id="btnCancelarEdicion" class="btn-secondary">❌ Cancelar</button>
+          <button id="btnGuardarEdicion" class="btn-primary">✓ Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⬇️ ÚNICO CAMBIO: Enlace al archivo JavaScript externo -->
+  <script src="script.js"></script>
+</body>
+</html>
